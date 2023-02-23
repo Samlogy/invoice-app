@@ -127,8 +127,8 @@ function InvoiceDetailScreen(props) {
           document.body.appendChild(a);
           a.click();
           a.remove();
-        } catch (e) {
-          console.log(e);
+        } catch (err) {
+          console.log(err);
         } finally {
           setIsExporting(false);
           setEscapeOverflow(false);
