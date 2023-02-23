@@ -31,9 +31,6 @@ export default function TemplateProductClient({ title }) {
             <ClientTable showAdvanceSearch />
           )}
         </div>
-        {/* <div className="w-full lg:w-2/6 pl-4 pr-4 sm:pl-4 sm:pr-2">
-          <QuickAddProduct />
-        </div> */}
       </div>
     </div>
   );
