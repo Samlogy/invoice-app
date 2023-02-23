@@ -4,8 +4,6 @@ import PageTitle from "../components/Common/PageTitle";
 import DashboardWidgets from "../components/Dashboard/DashboardWidgets";
 import InvoiceIcon from "../components/Icons/InvoiceIcon";
 import Button from "../components/Button/Button";
-import QuickEditCompany from "../components/Dashboard/QuickEditCompany";
-import QuickAddClient from "../components/Dashboard/QuickAddClient";
 import ClientTable from "../components/Clients/ClientTable";
 import InvoiceTable from "../components/Invoice/InvoiceTable";
 
@@ -14,6 +12,15 @@ export default function DashboardScreen() {
 
   const goToNewInvoice = useCallback(() => {
     navigate("/invoices/new");
+  }, [navigate]);
+  const goToNewEstimate = useCallback(() => {
+    navigate("/estimates/new");
+  }, [navigate]);
+  const goToNewExpense = useCallback(() => {
+    navigate("/expenses/new");
+  }, [navigate]);
+  const goToNewIncome = useCallback(() => {
+    navigate("/incomes/new");
   }, [navigate]);
 
   return (
@@ -33,7 +40,7 @@ export default function DashboardScreen() {
             <InvoiceTable />
           </div>
 
-          <Button onClick={goToNewInvoice} block={1}>
+          <Button onClick={goToNewEstimate} block={1}>
             <InvoiceIcon />
             <span className="inline-block ml-2"> New Estimate </span>
           </Button>
@@ -41,7 +48,7 @@ export default function DashboardScreen() {
             <ClientTable />
           </div>
 
-          <Button onClick={goToNewInvoice} block={1}>
+          <Button onClick={goToNewExpense} block={1}>
             <InvoiceIcon />
             <span className="inline-block ml-2"> New Expense </span>
           </Button>
@@ -49,7 +56,7 @@ export default function DashboardScreen() {
             <ClientTable />
           </div>
 
-          <Button onClick={goToNewInvoice} block={1}>
+          <Button onClick={goToNewIncome} block={1}>
             <InvoiceIcon />
             <span className="inline-block ml-2"> New Income </span>
           </Button>
