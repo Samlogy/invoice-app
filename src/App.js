@@ -65,8 +65,6 @@ function Routing() {
             <Route path=":id" element={<InvoiceDetailScreen />} />
           </Route>
 
-          {/* <Route path="about" element={<AboutScreen />} /> */}
-
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Container>
