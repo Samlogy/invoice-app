@@ -11,7 +11,6 @@ import ClientListScreen from "./pages/clients/ClientListScreen";
 import ProductListScreen from "./pages/products/ProductListScreen";
 import InvoiceListScreen from "./pages/invoices/InvoiceListScreen";
 import InvoiceDetailScreen from "./pages/invoices/InvoiceDetailScreen";
-import AboutScreen from "./pages/about/AboutScreen";
 import Container from "./components/Container/Container";
 import useInitApp from "./hook/useInitApp";
 import ClientDeleteConfirm from "./components/Clients/ClientDeleteConfirm";
