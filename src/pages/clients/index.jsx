@@ -1,8 +1,8 @@
 import React from "react";
-import TemplateProductClient from "../../components/TemplateProductClient";
+import ListProductClientTemplate from "../../components/ListProductClientTemplate";
 
 export default function ClientListScreen() {
   return (
-    <TemplateProductClient title="clients" />
+    <ListProductClientTemplate title="clients" />
   );
 }
