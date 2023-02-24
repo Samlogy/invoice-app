@@ -6,11 +6,18 @@ import {
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { useEffect } from "react";
-import DashboardScreen from "./pages/DashboardScreen";
-import ClientListScreen from "./pages/clients/ClientListScreen";
-import ProductListScreen from "./pages/products/ProductListScreen";
-import InvoiceListScreen from "./pages/invoices/InvoiceListScreen";
-import InvoiceDetailScreen from "./pages/invoices/InvoiceDetailScreen";
+
+import Home from "./pages/home";
+
+import ClientList from "./pages/clients";
+import AddClient from "./pages/clients/AddClient";
+
+import ProductList from "./pages/products";
+import AddProduct from "./pages/products/AddProduct";
+
+import InvoiceList from "./pages/invoices";
+import InvoiceDetails from "./pages/invoices/InvoiceDetails";
+
 import Container from "./components/Container/Container";
 import useInitApp from "./hook/useInitApp";
 import ClientDeleteConfirm from "./components/Clients/ClientDeleteConfirm";
@@ -40,30 +47,36 @@ function Routing() {
     <Routers>
       <Container>
         <Routes>
-          <Route path="/" element={<DashboardScreen />} />
+          <Route path="/" element={<Home />} />
 
-          <Route path="clients" element={<ClientListScreen />} />
-          <Route path="products" element={<ProductListScreen />} />
+          <Route path="clients">
+            <Route path="" element={<ClientList />} exact />
+            <Route path="new" element={<AddClient />} exact />
+          </Route>
+
+          <Route path="products">
+            <Route path="" element={<ProductList />} exact />
+            <Route path="new" element={<AddProduct />} exact />
+          </Route>
 
           <Route path="invoices">
-            <Route path="" element={<InvoiceListScreen />} exact />
-            <Route path=":id" element={<InvoiceDetailScreen />} />
+            <Route path="" element={<InvoiceList />} exact />
+            <Route path="new" element={<InvoiceDetails />} exact />
           </Route>
 
-          <Route path="estimates">
-            <Route path="" element={<InvoiceListScreen />} exact />
-            <Route path=":id" element={<InvoiceDetailScreen />} />
-          </Route>
+          {/* <Route path="estimates">
+            <Route path="" element={<EstimateList />} exact />
+          </Route> */}
 
-          <Route path="expenses">
-            <Route path="" element={<InvoiceListScreen />} exact />
-            <Route path=":id" element={<InvoiceDetailScreen />} />
+          {/* <Route path="expenses">
+            <Route path="" element={<InvoiceList />} exact />
+            <Route path=":id" element={<InvoiceDetails />} />
           </Route>
 
           <Route path="incomes">
-            <Route path="" element={<InvoiceListScreen />} exact />
-            <Route path=":id" element={<InvoiceDetailScreen />} />
-          </Route>
+            <Route path="" element={<InvoiceList />} exact />
+            <Route path=":id" element={<InvoiceDetails />} />
+          </Route> */}
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

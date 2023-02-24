@@ -15,9 +15,9 @@ import NumberFormat from "react-number-format";
 function DashboardWidgets() {
   const clients = useSelector(getAllClientsSelector);
   const products = useSelector(getAllProductSelector);
-  const totalBalance = useSelector(getTotalBalance);
   const allInvoices = useSelector(getAllInvoiceSelector);
 
+  const totalBalance = useSelector(getTotalBalance);
   const expenses = 0;
   const incomes = 0;
 

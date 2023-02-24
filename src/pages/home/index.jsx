@@ -1,11 +1,12 @@
 import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import PageTitle from "../components/Common/PageTitle";
-import DashboardWidgets from "../components/Dashboard/DashboardWidgets";
-import InvoiceIcon from "../components/Icons/InvoiceIcon";
-import Button from "../components/Button/Button";
-import ClientTable from "../components/Clients/ClientTable";
-import InvoiceTable from "../components/Invoice/InvoiceTable";
+import PageTitle from "../../components/Common/PageTitle";
+import DashboardWidgets from "../../components/Dashboard/DashboardWidgets";
+import InvoiceIcon from "../../components/Icons/InvoiceIcon";
+import Button from "../../components/Button/Button";
+import ClientTable from "../../components/Clients/ClientTable";
+import InvoiceTable from "../../components/Invoice/InvoiceTable";
+import ProductTable from "../../components/Product/ProductTable";
 
 export default function DashboardScreen() {
   const navigate = useNavigate();
@@ -13,14 +14,17 @@ export default function DashboardScreen() {
   const goToNewInvoice = useCallback(() => {
     navigate("/invoices/new");
   }, [navigate]);
-  const goToNewEstimate = useCallback(() => {
-    navigate("/estimates/new");
+  const goToNewProduct = useCallback(() => {
+    navigate("/products/new");
   }, [navigate]);
-  const goToNewExpense = useCallback(() => {
-    navigate("/expenses/new");
+  const goToNewClients = useCallback(() => {
+    navigate("/clients/new");
   }, [navigate]);
   const goToNewIncome = useCallback(() => {
     navigate("/incomes/new");
+  }, [navigate]);
+  const goToNewExpense = useCallback(() => {
+    navigate("/expense/new");
   }, [navigate]);
 
   return (
@@ -40,17 +44,17 @@ export default function DashboardScreen() {
             <InvoiceTable />
           </div>
 
-          <Button onClick={goToNewEstimate} block={1}>
+          <Button onClick={goToNewProduct} block={1}>
             <InvoiceIcon />
-            <span className="inline-block ml-2"> New Estimate </span>
+            <span className="inline-block ml-2"> New Product </span>
           </Button>
           <div className="mt-4">
-            <ClientTable />
+            <ProductTable />
           </div>
 
-          <Button onClick={goToNewExpense} block={1}>
+          <Button onClick={goToNewClients} block={1}>
             <InvoiceIcon />
-            <span className="inline-block ml-2"> New Expense </span>
+            <span className="inline-block ml-2"> New Client </span>
           </Button>
           <div className="mt-4">
             <ClientTable />
@@ -61,23 +65,19 @@ export default function DashboardScreen() {
             <span className="inline-block ml-2"> New Income </span>
           </Button>
           <div className="mt-4">
-            <ClientTable />
+            {/* <ClientTable /> */}
+            income table
+          </div>
+
+          <Button onClick={goToNewExpense} block={1}>
+            <InvoiceIcon />
+            <span className="inline-block ml-2"> New Expense </span>
+          </Button>
+          <div className="mt-4">
+            {/* <ClientTable /> */}
+            expense table
           </div>
         </div>
-
-        {/* <div className="w-full lg:w-2/6 pl-4 pr-4 sm:pl-4 sm:pr-2">
-          <div>
-            <Button onClick={goToNewInvoice} block={1}>
-              <InvoiceIcon />
-              <span className="inline-block ml-2"> Add New Invoice </span>
-            </Button>
-          </div>
-
-          <QuickEditCompany isShowDetail={false} />
-          <div className="mt-4">
-            <QuickAddClient />
-          </div>
-        </div> */}
       </div>
     </div>
   );
