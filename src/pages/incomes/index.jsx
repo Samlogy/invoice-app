@@ -1,8 +1,8 @@
 import React from 'react'
-import IncomeExpenseTemplate from '../../components/IncomeExpenseTemplate'
+import IncomeExpenseListTemplate from '../../components/IncomeExpenseListTemplate'
 
 export default  function IncomesList() {
   return (
-    <IncomeExpenseTemplate title="incomes" />
+    <IncomeExpenseListTemplate title="incomes" />
   )
 }

@@ -5,7 +5,7 @@ import PageTitle from "./Common/PageTitle";
 import InvoiceIcon from "./Icons/InvoiceIcon";
 import InvoiceTable from "./Invoice/InvoiceTable";
 
-function InvoiceEstimateTemplate({ title }) {
+export default function InvoiceEstimateTemplate({ title }) {
   const navigate = useNavigate();
 
   const goToNew = useCallback(() => {
@@ -38,5 +38,3 @@ function InvoiceEstimateTemplate({ title }) {
     </div>
   );
 }
-
-export default InvoiceEstimateTemplate;
