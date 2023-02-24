@@ -59,7 +59,7 @@ function Button(props) {
       }}
       whileTap={{ scale: 0.9 }}
       type="button"
-      className={buttonClasses}
+      className={`${buttonClasses} flex ml-auto w-[10rem] mb-4`}
       {...props}
     >
       {children}

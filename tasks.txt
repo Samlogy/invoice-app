@@ -1,0 +1,27 @@
+CREATE
+## PAGES ##
+// clients
+// products
+// invoices
+
+// estimates
+// incomes
+// expenses
+
+
+EDIT
+// refactoring
+
+NB:
+// estimate / invoice --> same UI / features
+// expenses / incomes --> same UI / features
+
+// profile (display / edit) user data
+
+
+OPTIONAL
+// add TypeScript
+// server side logic (exress) REST
+// auth logic
+// database design
+// profile page: (display / edit) user data
