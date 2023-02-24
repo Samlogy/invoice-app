@@ -1,12 +1,11 @@
 import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import PageTitle from "./Common/PageTitle";
-import ProductTable from "./Product/ProductTable";
-import ClientTable from "./Clients/ClientTable";
+import IncomeTable from "./income/IncomeTable"
 import Button from "./Button/Button";
 import InvoiceIcon from "./Icons/InvoiceIcon";
 
-export default function TemplateProductClient({ title }) {
+export default function IncomeExpenseListTemplate({ title }) {
   const navigate = useNavigate();
 
   const goToNew = useCallback(() => {
@@ -29,10 +28,10 @@ export default function TemplateProductClient({ title }) {
 
       <div className="flex flex-wrap">
         <div className="w-full pl-4 pr-4 sm:pl-4 sm:pr-0 mb-4 sm:mb-1">
-          {title === "products" ? (
-            <ProductTable showAdvanceSearch />
+          {title === "incomes" ? (
+            <IncomeTable  showAdvanceSearch />
           ) : (
-            <ClientTable showAdvanceSearch />
+            <IncomeTable  showAdvanceSearch />
           )}
         </div>
       </div>

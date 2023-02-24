@@ -19,6 +19,7 @@ import InvoiceList from "./pages/invoices";
 import InvoiceDetails from "./pages/invoices/InvoiceDetails";
 
 import IncomesList from "./pages/incomes";
+import IncomeDetails from "./pages/incomes/IncomeDetails";
 // import InvoiceDetails from "./pages/invoices/InvoiceDetails";
 
 import Container from "./components/Container/Container";
@@ -69,7 +70,7 @@ function Routing() {
 
           <Route path="incomes">
             <Route path="" element={<IncomesList />} exact />
-            {/* <Route path=":id" element={<InvoiceDetails />} /> */}
+            <Route path=":id" element={<IncomeDetails />} />
           </Route>
 
           {/* <Route path="estimates">
