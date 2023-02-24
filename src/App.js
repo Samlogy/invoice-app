@@ -61,7 +61,7 @@ function Routing() {
 
           <Route path="invoices">
             <Route path="" element={<InvoiceList />} exact />
-            <Route path="new" element={<InvoiceDetails />} exact />
+            <Route path=":id" element={<InvoiceDetails />} />
           </Route>
 
           {/* <Route path="estimates">

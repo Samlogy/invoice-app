@@ -25,7 +25,7 @@ export default function TemplateProductClient({ title }) {
       </Button>
       <div className="flex flex-wrap">
         <div className="w-full pl-4 pr-4 sm:pl-4 sm:pr-0 mb-4 sm:mb-1">
-          {title === "product" ? (
+          {title === "products" ? (
             <ProductTable showAdvanceSearch />
           ) : (
             <ClientTable showAdvanceSearch />

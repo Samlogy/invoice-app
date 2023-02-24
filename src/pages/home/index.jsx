@@ -24,7 +24,7 @@ export default function DashboardScreen() {
     navigate("/incomes/new");
   }, [navigate]);
   const goToNewExpense = useCallback(() => {
-    navigate("/expense/new");
+    navigate("/expenses/new");
   }, [navigate]);
 
   return (
