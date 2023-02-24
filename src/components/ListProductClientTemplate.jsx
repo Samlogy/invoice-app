@@ -15,14 +15,27 @@ export default function TemplateProductClient({ title }) {
 
   return (
     <div>
-      <div className="flex flex-col sm:flex-row flex-wrap p-4">
-        <div className="sm:mr-4">
+      <div className="flex flex-col sm:flex-row flex-wrap items-center justify-between">
+        <div className="p-4">
           <PageTitle title={title} />
         </div>
-        <div className="flex-1">
-          <Button onClick={goToNew} block={1} size="md">
-            <InvoiceIcon />
-            <span className="inline-block ml-2"> Add New {title} </span>
+
+        <div className="p-4">
+          <Button size="sm" block={1} onClick={goToNew}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d={"M15 19l-7-7 7-7"}
+              />
+            </svg>
           </Button>
         </div>
       </div>
