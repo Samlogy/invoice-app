@@ -18,6 +18,9 @@ import AddProduct from "./pages/products/AddProduct";
 import InvoiceList from "./pages/invoices";
 import InvoiceDetails from "./pages/invoices/InvoiceDetails";
 
+import IncomesList from "./pages/incomes";
+// import InvoiceDetails from "./pages/invoices/InvoiceDetails";
+
 import Container from "./components/Container/Container";
 import useInitApp from "./hook/useInitApp";
 import ClientDeleteConfirm from "./components/Clients/ClientDeleteConfirm";
@@ -62,6 +65,11 @@ function Routing() {
           <Route path="invoices">
             <Route path="" element={<InvoiceList />} exact />
             <Route path=":id" element={<InvoiceDetails />} />
+          </Route>
+
+          <Route path="incomes">
+            <Route path="" element={<IncomesList />} exact />
+            {/* <Route path=":id" element={<InvoiceDetails />} /> */}
           </Route>
 
           {/* <Route path="estimates">
