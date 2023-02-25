@@ -18,14 +18,12 @@ import {
 
 const emptyForm = {
   id: "",
-  image: "",
-  companyName: "",
-  companyEmail: "",
-  companyMobile: "",
-  billingAddress: "",
-  website: "",
-  createdAt: new Date().toDateString(),
-  editedAt: "",
+  avatar: "",
+  name: "",
+  email: "",
+  mobile: "",
+  address: "",
+  website: ""
 };
 
 export default function Profile({ isShowDetail = false, alreadySet = false }) {
@@ -41,12 +39,8 @@ export default function Profile({ isShowDetail = false, alreadySet = false }) {
   );
 
   const onChangeImage = useCallback((str) => {
-    setCompanyForm((prev) => ({ ...prev, image: str }));
+    setCompanyForm((prev) => ({ ...prev, avatar: str }));
   }, []);
-
-  // const clearForm = useCallback(() => {
-  //   setCompanyForm({ ...emptyForm });
-  // }, []);
 
   const handlerCompanyValue = useCallback((event, keyName) => {
     const value = event.target.value;
@@ -77,31 +71,24 @@ export default function Profile({ isShowDetail = false, alreadySet = false }) {
   const imageUploadClasses = useMemo(() => {
     const defaultStyle = "rounded-xl ";
 
-    if (isTouched && !companyForm.image) {
-      return defaultStyle + " border-dashed border-2 border-red-400 ";
-    }
-
-    if (!companyForm.image) {
-      return defaultStyle + " border-dashed border-2 border-indigo-400 ";
-    }
-
+    if (isTouched && !companyForm?.avatar) return defaultStyle + " border-dashed border-2 border-red-400 ";
+    if (!companyForm?.avatar) return defaultStyle + " border-dashed border-2 border-indigo-400 ";
     return defaultStyle;
   }, [companyForm, isTouched]);
 
   useEffect(() => {
-    if (company) {
-      setCompanyForm(company);
-    }
+    if (company) setCompanyForm(company);
   }, [company]);
 
   useEffect(() => {
     setValidForm((prev) => ({
       id: true,
-      image: companyForm.image ? true : false,
-      companyName: companyForm.companyName ? true : false,
-      companyEmail: companyForm.companyEmail ? true : false,
-      companyMobile: companyForm.companyMobile ? true : false,
-      billingAddress: companyForm.billingAddress ? true : false,
+      avatar: companyForm?.avatar ? true : false,
+      name: companyForm?.name ? true : false,
+      email: companyForm?.email ? true : false,
+      mobile: companyForm?.mobile ? true : false,
+      website: companyForm?.website ? true : false,
+      address: companyForm?.address ? true : false,
     }));
   }, [companyForm]);
 
@@ -112,11 +99,11 @@ export default function Profile({ isShowDetail = false, alreadySet = false }) {
           <PageTitle title={"Preview"} />
           <div className="flex flex-col mt-4">
             <div className="flex w-full justify-between">
-              <div className={"mb-2"}>
-                {companyForm?.image ? (
+              <div className={"mb-4"}>
+                {companyForm?.avatar ? (
                   <img
                     className={"object-cover h-14 w-14 rounded-lg"}
-                    src={companyForm?.image}
+                    src={companyForm?.avatar}
                     alt="upload_image"
                   />
                 ) : (
@@ -136,26 +123,26 @@ export default function Profile({ isShowDetail = false, alreadySet = false }) {
                   </svg>
                 )}
               </div>
-              <span className="font-medium text-sm"> {!companyForm?.image ? 'Your Company Image' : ""} </span>
+              <span className="font-medium text-sm"> {!companyForm?.avatar ? 'Your Company Image' : ""} </span>
             </div>
             <div className="flex w-full justify-between">
-              <span className="font-bold mb-2"> Name: </span>
-              <span className="font-medium text-sm"> {companyForm?.companyName || 'Your Company Name'} </span>
+              <span className="font-bold mb-4"> Name: </span>
+              <span className="font-medium text-sm"> {companyForm?.name || 'Your Company Name'} </span>
             </div>
             <div className="flex w-full justify-between">
-              <span className="font-bold mb-2"> Email: </span>
-              <span className="font-medium text-sm"> {companyForm?.companyEmail || 'Your Company Email'} </span>
+              <span className="font-bold mb-4"> Email: </span>
+              <span className="font-medium text-sm"> {companyForm?.email || 'Your Company Email'} </span>
             </div>
             <div className="flex w-full justify-between">
-              <span className="font-bold mb-2"> Mobile: </span>
-              <span className="font-medium text-sm"> {companyForm?.companyMobile || 'Your Company Mobile'} </span>
+              <span className="font-bold mb-4"> Mobile: </span>
+              <span className="font-medium text-sm"> {companyForm?.mobile || 'Your Company Mobile'} </span>
             </div>
             <div className="flex w-full justify-between">
-              <span className="font-bold mb-2"> Address: </span>
-              <span className="font-medium text-sm"> {companyForm?.billingAddress || 'Your Company Address'} </span>
+              <span className="font-bold mb-4"> Address: </span>
+              <span className="font-medium text-sm"> {companyForm?.address || 'Your Company Address'} </span>
             </div>
             <div className="flex w-full justify-between">
-              <span className="font-bold mb-2"> Website: </span>
+              <span className="font-bold mb-4"> Website: </span>
               <span className="font-medium text-sm"> {companyForm?.website || 'Your Company Website'} </span>
             </div>
           </div>
@@ -168,13 +155,13 @@ export default function Profile({ isShowDetail = false, alreadySet = false }) {
         </div>
         <div className="flex mt-2">
           {isInitLoading ? (
-            <Skeleton className="skeleton-input-radius skeleton-image border-dashed border-2" />
+            <Skeleton className="skeleton-input-radius skeleton-avatar border-dashed border-2" />
           ) : (
             <ImageUpload
               onChangeImage={onChangeImage}
               keyName="QuickEditImageUpload"
               className={imageUploadClasses}
-              url={companyForm.image}
+              url={companyForm?.avatar}
             />
           )}
 
@@ -183,14 +170,14 @@ export default function Profile({ isShowDetail = false, alreadySet = false }) {
               <Skeleton className={defaultSkeletonLargeStyle} />
             ) : (
               <input
-                value={companyForm.companyName}
+                value={companyForm?.name}
                 placeholder="Company Name"
                 className={
-                  !validForm.companyName && isTouched
+                  !validForm.name && isTouched
                     ? defaultInputLargeInvalidStyle
                     : defaultInputLargeStyle
                 }
-                onChange={(e) => handlerCompanyValue(e, "companyName")}
+                onChange={(e) => handlerCompanyValue(e, "name")}
                 disabled={isInitLoading}
               />
             )}
@@ -203,14 +190,14 @@ export default function Profile({ isShowDetail = false, alreadySet = false }) {
               <Skeleton className={defaultSkeletonNormalStyle} />
             ) : (
               <input
-                value={companyForm.billingAddress}
+                value={companyForm?.address}
                 placeholder="Company Address"
                 className={
-                  !validForm.billingAddress && isTouched
+                  !validForm.address && isTouched
                     ? defaultInputInvalidStyle
                     : defaultInputStyle
                 }
-                onChange={(e) => handlerCompanyValue(e, "billingAddress")}
+                onChange={(e) => handlerCompanyValue(e, "address")}
                 disabled={isInitLoading}
               />
             )}
@@ -224,14 +211,14 @@ export default function Profile({ isShowDetail = false, alreadySet = false }) {
                 <Skeleton className={defaultSkeletonNormalStyle} />
               ) : (
                 <input
-                  value={companyForm.companyEmail}
+                  value={companyForm?.email}
                   placeholder="Company Email"
                   className={
-                    !validForm.companyEmail && isTouched
+                    !validForm.email && isTouched
                       ? defaultInputInvalidStyle
                       : defaultInputStyle
                   }
-                  onChange={(e) => handlerCompanyValue(e, "companyEmail")}
+                  onChange={(e) => handlerCompanyValue(e, "email")}
                   disabled={isInitLoading}
                 />
               )}
@@ -243,14 +230,33 @@ export default function Profile({ isShowDetail = false, alreadySet = false }) {
                 <Skeleton className={defaultSkeletonNormalStyle} />
               ) : (
                 <input
-                  value={companyForm.companyMobile}
+                  value={companyForm?.mobile}
                   placeholder="Company Phone"
                   className={
-                    !validForm.companyMobile && isTouched
+                    !validForm.mobile && isTouched
                       ? defaultInputInvalidStyle
                       : defaultInputStyle
                   }
-                  onChange={(e) => handlerCompanyValue(e, "companyMobile")}
+                  onChange={(e) => handlerCompanyValue(e, "mobile")}
+                  disabled={isInitLoading}
+                />
+              )}
+            </div>
+          </div>
+          <div className="flex mt-2">
+            <div className="flex-1">
+              {isInitLoading ? (
+                <Skeleton className={defaultSkeletonNormalStyle} />
+              ) : (
+                <input
+                  value={companyForm?.website}
+                  placeholder="Company Phone"
+                  className={
+                    !validForm.website && isTouched
+                      ? defaultInputInvalidStyle
+                      : defaultInputStyle
+                  }
+                  onChange={(e) => handlerCompanyValue(e, "website")}
                   disabled={isInitLoading}
                 />
               )}
