@@ -24,9 +24,12 @@ const emptySearchForm = {
   name: "",
   email: "",
   mobileNo: "",
+  createdAt: "",
+  editedAt: "",
+  address: "",
 };
 
-function ClientTable({ showAdvanceSearch = false }) {
+export default function ClientTable({ showAdvanceSearch = false }) {
   const { initLoading } = useAppContext();
   const dispatch = useDispatch();
   const allClients = useSelector(getAllClientsSelector);
@@ -38,21 +41,21 @@ function ClientTable({ showAdvanceSearch = false }) {
 
   const clients = useMemo(() => {
     let filterData = allClients.length > 0 ? [...allClients].reverse() : [];
-    if (searchForm.name?.trim()) {
+    if (searchForm?.name?.trim()) {
       filterData = filterData.filter((client) =>
-        client.name.includes(searchForm.name)
+        client?.name.includes(searchForm?.name)
       );
     }
 
-    if (searchForm.email?.trim()) {
+    if (searchForm?.email?.trim()) {
       filterData = filterData.filter((client) =>
-        client.email.includes(searchForm.email)
+        client?.email.includes(searchForm?.email)
       );
     }
 
-    if (searchForm.mobileNo?.trim()) {
+    if (searchForm?.mobileNo?.trim()) {
       filterData = filterData.filter((client) =>
-        client.mobileNo.includes(searchForm.mobileNo)
+        client?.mobileNo.includes(searchForm?.mobileNo)
       );
     }
 
@@ -119,7 +122,7 @@ function ClientTable({ showAdvanceSearch = false }) {
               </div>
               <input
                 autoComplete="nope"
-                value={searchForm.name}
+                value={searchForm?.name}
                 placeholder="User Name"
                 className={defaultSearchStyle}
                 onChange={(e) => handlerSearchValue(e, "name")}
@@ -144,7 +147,7 @@ function ClientTable({ showAdvanceSearch = false }) {
               </div>
               <input
                 autoComplete="nope"
-                value={searchForm.email}
+                value={searchForm?.email}
                 placeholder="User Email"
                 className={defaultSearchStyle}
                 onChange={(e) => handlerSearchValue(e, "email")}
@@ -169,10 +172,57 @@ function ClientTable({ showAdvanceSearch = false }) {
               </div>
               <input
                 autoComplete="nope"
-                value={searchForm.mobileNo}
+                value={searchForm?.mobileNo}
                 placeholder="Mobile Number"
                 className={defaultSearchStyle}
                 onChange={(e) => handlerSearchValue(e, "mobileNo")}
+              />
+            </div>
+            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
+              <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-gray-400"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <input
+                autoComplete="nope"
+                value={searchForm?.address}
+                placeholder="User Address"
+                className={defaultSearchStyle}
+                onChange={(e) => handlerSearchValue(e, "address")}
+              />
+            </div>
+            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
+              <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-gray-400"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <input
+                type="date"
+                autoComplete="nope"
+                value={searchForm?.createdAt}
+                placeholder="User CreatedAt"
+                className={defaultSearchStyle}
+                onChange={(e) => handlerSearchValue(e, "createdAt")}
               />
             </div>
           </div>
@@ -190,6 +240,12 @@ function ClientTable({ showAdvanceSearch = false }) {
           <div className="sm:text-left text-default-color font-title flex-1">
             Email
           </div>
+          <div className="sm:text-left text-default-color font-title flex-1">
+            Address
+          </div>
+          <div className="sm:text-left text-default-color font-title flex-1">
+            CreatedAt
+          </div>
           <div className="sm:text-left text-default-color font-title sm:w-11">
             Action
           </div>
@@ -198,15 +254,15 @@ function ClientTable({ showAdvanceSearch = false }) {
         <div>
           {currentItems &&
             currentItems.map((client) => (
-              <div className={defaultTdWrapperStyle} key={client.id}>
+              <div className={defaultTdWrapperStyle} key={client?.id}>
                 <div className={defaultTdStyle}>
                   <div className={defaultTdContentTitleStyle}>Name</div>
                   <div className={defaultTdContent}>
-                    {client.image ? (
+                    {client?.image ? (
                       <img
                         className="object-cover h-10 w-10 rounded-2xl"
-                        src={client.image}
-                        alt={client.name}
+                        src={client?.image}
+                        alt={client?.name}
                       />
                     ) : (
                       <span className="h-10 w-10 rounded-2xl bg-gray-100 flex justify-center items-center">
@@ -226,7 +282,7 @@ function ClientTable({ showAdvanceSearch = false }) {
                     )}
 
                     <span className="whitespace-nowrap text-ellipsis overflow-hidden pl-1">
-                      {client.name}
+                      {client?.name}
                     </span>
                   </div>
                 </div>
@@ -234,7 +290,7 @@ function ClientTable({ showAdvanceSearch = false }) {
                   <div className={defaultTdContentTitleStyle}>Mobile</div>
                   <div className={defaultTdContent}>
                     <span className="whitespace-nowrap text-ellipsis overflow-hidden">
-                      {client.mobileNo}
+                      {client?.mobileNo}
                     </span>
                   </div>
                 </div>
@@ -242,7 +298,23 @@ function ClientTable({ showAdvanceSearch = false }) {
                   <div className={defaultTdContentTitleStyle}>Email</div>
                   <div className={defaultTdContent}>
                     <span className="whitespace-nowrap text-ellipsis overflow-hidden">
-                      {client.email}{" "}
+                      {client?.email}{" "}
+                    </span>
+                  </div>
+                </div>
+                <div className={defaultTdStyle}>
+                  <div className={defaultTdContentTitleStyle}>Address</div>
+                  <div className={defaultTdContent}>
+                    <span className="whitespace-nowrap text-ellipsis overflow-hidden">
+                      {client?.address}{" "}
+                    </span>
+                  </div>
+                </div>
+                <div className={defaultTdStyle}>
+                  <div className={defaultTdContentTitleStyle}>CreatedAt</div>
+                  <div className={defaultTdContent}>
+                    <span className="whitespace-nowrap text-ellipsis overflow-hidden">
+                      {client?.createdAt}{" "}
                     </span>
                   </div>
                 </div>
@@ -310,5 +382,3 @@ function ClientTable({ showAdvanceSearch = false }) {
     </>
   );
 }
-
-export default ClientTable;

@@ -30,7 +30,7 @@ const emptyForm = {
   image: "",
   name: "",
   email: "",
-  billingAddress: "",
+  address: "",
   mobileNo: "",
 };
 
@@ -86,7 +86,7 @@ export default function AddClient({ editForm }) {
       autoClose: 2000,
     });
 
-    dispatch(addNewClient({ ...clientForm, id: nanoid() }));
+    dispatch(addNewClient({ ...clientForm, id: nanoid(), createdAt: new Date().toISOString(), editedAt: "" }));
     setIsTouched(false);
   }, [clientForm, dispatch, validForm]);
 
@@ -109,7 +109,7 @@ export default function AddClient({ editForm }) {
       image: true,
       name: clientForm?.name?.trim() ? true : false,
       email: isValidEmail ? true : false,
-      billingAddress: clientForm?.billingAddress?.trim() ? true : false,
+      address: clientForm?.address?.trim() ? true : false,
       mobileNo: clientForm?.mobileNo?.trim() ? true : false,
     }));
   }, [clientForm]);
@@ -233,13 +233,13 @@ export default function AddClient({ editForm }) {
                   autoComplete="nope"
                   placeholder="Billing Address"
                   className={
-                    !validForm.billingAddress && isTouched
+                    !validForm.address && isTouched
                       ? defaultInputInvalidStyle
                       : defaultInputStyle
                   }
                   disabled={isInitLoading}
-                  value={clientForm.billingAddress}
-                  onChange={(e) => handlerClientValue(e, "billingAddress")}
+                  value={clientForm.address}
+                  onChange={(e) => handlerClientValue(e, "address")}
                 />
               )}
             </div>

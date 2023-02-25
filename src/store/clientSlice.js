@@ -12,7 +12,8 @@ const initialState = {
     image: "",
     name: "",
     email: "",
-    billingAddress: "",
+    createdAt: "",
+    editedAt: "",
     mobileNo: "",
   },
   editedID: null,
@@ -33,8 +34,10 @@ export const clientsSlice = createSlice({
         image: "",
         name: "",
         email: "",
-        billingAddress: "",
+        address: "",
         mobileNo: "",
+        createdAt: "",
+        editedAt: "",
       };
 
       state.newForm = { ...reNewForm };

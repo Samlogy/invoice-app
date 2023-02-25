@@ -22,13 +22,15 @@ const emptyForm = {
   image: "",
   name: "",
   email: "",
-  billingAddress: "",
+  address: "",
   mobileNo: "",
+  createdAt: "",
+  editedAt: "",
 };
 
 const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-function ClientEditModal(props) {
+export default function ClientEditModal(props) {
   const dispatch = useDispatch();
   const editedID = useSelector(getEditedIdForm);
   const clients = useSelector(getAllClientsSelector);
@@ -58,7 +60,9 @@ function ClientEditModal(props) {
       autoClose: 2000,
     });
 
-    dispatch(onConfirmEditClient(clientForm));
+    dispatch(
+      onConfirmEditClient({ ...clientForm, editedAt: new Date().toISOString() })
+    );
     setIsTouched(false);
   }, [dispatch, validForm, clientForm]);
 
@@ -83,7 +87,7 @@ function ClientEditModal(props) {
   const imageUploadClasses = useMemo(() => {
     const defaultStyle = "rounded-xl ";
 
-    if (!clientForm.image) {
+    if (!clientForm?.image) {
       return defaultStyle + " border-dashed border-2 border-indigo-400 ";
     }
 
@@ -99,7 +103,7 @@ function ClientEditModal(props) {
       image: true,
       name: clientForm?.name?.trim() ? true : false,
       email: isValidEmail ? true : false,
-      billingAddress: clientForm?.billingAddress?.trim() ? true : false,
+      address: clientForm?.address?.trim() ? true : false,
       mobileNo: clientForm?.mobileNo?.trim() ? true : false,
     }));
   }, [clientForm]);
@@ -155,14 +159,14 @@ function ClientEditModal(props) {
                           <ImageUpload
                             keyName="QuickEditImageUpload"
                             className={imageUploadClasses}
-                            url={clientForm.image}
+                            url={clientForm?.image}
                             onChangeImage={onChangeImage}
                           />
 
                           <div className="flex-1 pl-3">
                             <input
                               autoComplete="nope"
-                              value={clientForm.name}
+                              value={clientForm?.name}
                               placeholder="User Name"
                               className={
                                 !validForm.name && isTouched
@@ -183,7 +187,7 @@ function ClientEditModal(props) {
                                   ? defaultInputInvalidStyle
                                   : defaultInputStyle
                               }
-                              value={clientForm.email}
+                              value={clientForm?.email}
                               onChange={(e) => handlerClientValue(e, "email")}
                             />
                           </div>
@@ -198,7 +202,7 @@ function ClientEditModal(props) {
                                   ? defaultInputInvalidStyle
                                   : defaultInputStyle
                               }
-                              value={clientForm.mobileNo}
+                              value={clientForm?.mobileNo}
                               onChange={(e) =>
                                 handlerClientValue(e, "mobileNo")
                               }
@@ -209,16 +213,14 @@ function ClientEditModal(props) {
                           <div className="flex-1">
                             <input
                               autoComplete="nope"
-                              placeholder="Billing Address"
+                              placeholder="Address"
                               className={
-                                !validForm.billingAddress && isTouched
+                                !validForm.address && isTouched
                                   ? defaultInputInvalidStyle
                                   : defaultInputStyle
                               }
-                              value={clientForm.billingAddress}
-                              onChange={(e) =>
-                                handlerClientValue(e, "billingAddress")
-                              }
+                              value={clientForm?.address}
+                              onChange={(e) => handlerClientValue(e, "address")}
                             />
                           </div>
                         </div>
@@ -251,5 +253,3 @@ function ClientEditModal(props) {
     </motion.div>
   ) : null;
 }
-
-export default ClientEditModal;
