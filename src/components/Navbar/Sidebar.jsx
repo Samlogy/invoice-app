@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import localforage from "localforage";
 import { NavLink, useLocation } from "react-router-dom";
@@ -78,27 +78,49 @@ export default function Sidebar() {
     }
   }, [showNavbar, toggleNavbar]);
 
-  // const aboutRoute = useMemo(() => pathname === "/about", [pathname]);
   const clearData = () => {
     localforage.clear()
   };
-  const importData = () => {};
-  const exportData = () => {
-    const exportName = "business_app_data"
+  const importData = (e) => {
+    const file = e.target.files[0];
+      let allowedExtensions = /(json)$/i;
+      const isValid = allowedExtensions.exec(file.type);
+
+      if (!isValid) {
+        alert("Not Valid File Format !");
+        e.target.value = null;
+        return;
+      }
+      // read file content
+      // separate each object data + associate a key with object
+      // save each object + key in indexDB
+  };
+  const exportData = async () => {
+    const exportName = "business-app-db"
     let appData = []
 
     const appKeys = Object.values(ALL_KEYS)
-    appKeys.map((item) => localforage.getItem(item).then(res => appData.push(res)))
-    if (appData) {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData));
-      const downloadAnchorNode = document.createElement('a');
-      downloadAnchorNode.setAttribute("href",     dataStr);
-      downloadAnchorNode.setAttribute("download", exportName + ".json");
-      document.body.appendChild(downloadAnchorNode); // required for firefox
-      downloadAnchorNode.click();
-      downloadAnchorNode.remove();
+    try {
+       const data = await Promise.all(appKeys.map((item) => localforage.getItem(item)))
+       console.log("data: ", data)
+       appData.push(...data)
+       if (appData) {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href",     dataStr);
+        downloadAnchorNode.setAttribute("download", exportName + ".json");
+        document.body.appendChild(downloadAnchorNode); // required for firefox
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+      }
+    } catch (err) {
+      console.log('err: ', err)
     }
   };
+
+  const inputRef = useRef(null);
+  const onClickImport = () => inputRef?.current?.click()
+
 
   return (
     <>
@@ -187,7 +209,12 @@ export default function Sidebar() {
         </ul>
 
         <hr />
-
+        <input
+        ref={inputRef}
+        className="hidden"
+        type="file"
+        onChange={importData}
+      />
         <Button
           onClick={clearData}
           size="sm"
@@ -197,7 +224,7 @@ export default function Sidebar() {
         >
           <span className="inline-block ml-2"> Clear Data </span>
         </Button>
-        <Button onClick={importData} size="sm" addStyle="mb-4" block outlined>
+        <Button onClick={ onClickImport} size="sm" addStyle="mb-4" block outlined>
           <span className="inline-block ml-2"> Import Data </span>
         </Button>
         <Button onClick={exportData} size="sm" addStyle="mb-4" block outlined>
