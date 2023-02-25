@@ -22,9 +22,12 @@ const emptyForm = {
   productID: "",
   name: "",
   amount: 0,
+  quantity: 0,
+  createdAt: "",
+  editedAt: "",
 };
 
-function ProductEditModal(props) {
+export default function ProductEditModal(props) {
   const dispatch = useDispatch();
   const editedID = useSelector(getEditedIdForm);
   const products = useSelector(getAllProductSelector);
@@ -54,7 +57,12 @@ function ProductEditModal(props) {
       autoClose: 2000,
     });
 
-    dispatch(onConfirmEditProduct(productForm));
+    dispatch(
+      onConfirmEditProduct({
+        ...productForm,
+        editedAt: new Date().toISOString(),
+      })
+    );
     setIsTouched(false);
   }, [dispatch, validForm, productForm]);
 
@@ -77,7 +85,7 @@ function ProductEditModal(props) {
   const imageUploadClasses = useMemo(() => {
     const defaultStyle = "rounded-xl ";
 
-    if (!productForm.image) {
+    if (!productForm?.image) {
       return defaultStyle + " border-dashed border-2 border-indigo-400 ";
     }
 
@@ -85,12 +93,12 @@ function ProductEditModal(props) {
   }, [productForm]);
 
   useEffect(() => {
-      setValidForm((prev) => ({
-        id: true,
-        image: true,
-        name: productForm?.name?.trim() ? true : false,
-        amount: productForm?.amount <= 0 ? false : true,
-      }));
+    setValidForm((prev) => ({
+      id: true,
+      image: true,
+      name: productForm?.name?.trim() ? true : false,
+      amount: productForm?.amount <= 0 ? false : true,
+    }));
   }, [productForm]);
 
   useEffect(() => {
@@ -146,7 +154,7 @@ function ProductEditModal(props) {
                           <ImageUpload
                             keyName="QuickEditImageUpload"
                             className={imageUploadClasses}
-                            url={productForm.image}
+                            url={productForm?.image}
                             onChangeImage={onChangeImage}
                           />
 
@@ -154,7 +162,7 @@ function ProductEditModal(props) {
                             <div>
                               <input
                                 autoComplete="nope"
-                                value={productForm.productID}
+                                value={productForm?.productID}
                                 placeholder="Product ID"
                                 className={defaultInputLargeStyle}
                                 onChange={(e) =>
@@ -179,7 +187,7 @@ function ProductEditModal(props) {
                                     ? defaultInputInvalidStyle
                                     : defaultInputStyle
                                 }
-                                value={productForm.name}
+                                value={productForm?.name}
                                 onChange={(e) => handlerProductValue(e, "name")}
                               />
                             </div>
@@ -200,9 +208,33 @@ function ProductEditModal(props) {
                                     ? defaultInputInvalidStyle
                                     : defaultInputStyle
                                 }
-                                value={productForm.amount}
+                                value={productForm?.amount}
                                 onChange={(e) =>
                                   handlerProductValue(e, "amount")
+                                }
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="mt-2">
+                          <div className="font-title text-sm text-default-color">
+                            Product Quantity
+                          </div>
+                          <div className="flex">
+                            <div className="flex-1">
+                              <input
+                                autoComplete="nope"
+                                placeholder="quantity"
+                                type="number"
+                                className={
+                                  !validForm.quantity && isTouched
+                                    ? defaultInputInvalidStyle
+                                    : defaultInputStyle
+                                }
+                                value={productForm?.quantity}
+                                onChange={(e) =>
+                                  handlerProductValue(e, "quantity")
                                 }
                               />
                             </div>
@@ -237,5 +269,3 @@ function ProductEditModal(props) {
     </motion.div>
   ) : null;
 }
-
-export default ProductEditModal;

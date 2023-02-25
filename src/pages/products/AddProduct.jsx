@@ -27,6 +27,7 @@ const emptyForm = {
   productID: "",
   name: "",
   amount: 0,
+  quantity: 0
 };
 
 function AddProduct() {
@@ -81,14 +82,14 @@ function AddProduct() {
       autoClose: 2000,
     });
 
-    dispatch(addNewProduct({ ...productForm, id: nanoid() }));
+    dispatch(addNewProduct({ ...productForm, id: nanoid(), createdAt: new Date().toISOString(), editedAt: "" }));
     setIsTouched(false);
   }, [productForm, dispatch, validForm]);
 
   const imageUploadClasses = useMemo(() => {
     const defaultStyle = "rounded-xl ";
 
-    if (!productForm.image) {
+    if (!productForm?.image) {
       return defaultStyle + " border-dashed border-2 border-indigo-400 ";
     }
 
@@ -120,7 +121,7 @@ function AddProduct() {
         <PageTitle title={"Product"} />
       </div>
     
-    <Button size="sm" block={1} onClick={onClickBack}>
+    <Button addStyle="flex mr-auto w-[10rem] mb-4" onClick={onClickBack}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4"
@@ -146,7 +147,7 @@ function AddProduct() {
                 <ImageUpload
                   keyName="QuickEditImageUpload"
                   className={imageUploadClasses}
-                  url={productForm.image}
+                  url={productForm?.image}
                   onChangeImage={onChangeImage}
                 />
               )}
@@ -158,7 +159,7 @@ function AddProduct() {
                   <div>
                     <input
                       autoComplete="nope"
-                      value={productForm.productID}
+                      value={productForm?.productID}
                       placeholder="Product ID"
                       className={defaultInputLargeStyle}
                       onChange={(e) => handlerProductValue(e, "productID")}
@@ -187,7 +188,7 @@ function AddProduct() {
                           : defaultInputStyle
                       }
                       disabled={isInitLoading}
-                      value={productForm.name}
+                      value={productForm?.name}
                       onChange={(e) => handlerProductValue(e, "name")}
                     />
                   )}
@@ -213,8 +214,34 @@ function AddProduct() {
                           : defaultInputStyle
                       }
                       disabled={isInitLoading}
-                      value={productForm.amount}
+                      value={productForm?.amount}
                       onChange={(e) => handlerProductValue(e, "amount")}
+                    />
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="mt-2">
+              <div className="font-title text-sm text-default-color">
+                Product Quantity
+              </div>
+              <div className="flex">
+                <div className="flex-1">
+                  {isInitLoading ? (
+                    <Skeleton className={defaultSkeletonNormalStyle} />
+                  ) : (
+                    <input
+                      autoComplete="nope"
+                      placeholder="Quantity"
+                      type="tel"
+                      className={
+                        !validForm.quantity && isTouched
+                          ? defaultInputInvalidStyle
+                          : defaultInputStyle
+                      }
+                      disabled={isInitLoading}
+                      value={productForm?.quantity}
+                      onChange={(e) => handlerProductValue(e, "quantity")}
                     />
                   )}
                 </div>
