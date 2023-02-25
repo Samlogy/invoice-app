@@ -21,7 +21,7 @@ export default function TemplateProductClient({ title }) {
         </div>
 
         <div className="p-4">
-          <Button size="sm" block={1} onClick={goToNew}>
+          <Button addStyle="flex ml-auto w-[10rem] mb-4 capitalize" onClick={goToNew}>
             <InvoiceIcon />
             Add {title}
           </Button>

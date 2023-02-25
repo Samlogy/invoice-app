@@ -25,9 +25,11 @@ const itemsPerPage = 10;
 const emptySearchForm = {
   name: "",
   productID: "",
+  createdAt: "",
+  amount: "",
 };
 
-function ProductTable({ showAdvanceSearch = false }) {
+export default function ProductTable({ showAdvanceSearch = false }) {
   const { initLoading } = useAppContext();
   const dispatch = useDispatch();
   const allProducts = useSelector(getAllProductSelector);
@@ -39,15 +41,15 @@ function ProductTable({ showAdvanceSearch = false }) {
 
   const products = useMemo(() => {
     let filterData = allProducts.length > 0 ? [...allProducts].reverse() : [];
-    if (searchForm.name?.trim()) {
+    if (searchForm?.name?.trim()) {
       filterData = filterData.filter((product) =>
-        product.name.includes(searchForm.name)
+        product?.name.includes(searchForm?.name)
       );
     }
 
-    if (searchForm.productID?.trim()) {
+    if (searchForm?.productID?.trim()) {
       filterData = filterData.filter((product) =>
-        product.productID.includes(searchForm.productID)
+        product?.productID.includes(searchForm?.productID)
       );
     }
 
@@ -103,10 +105,23 @@ function ProductTable({ showAdvanceSearch = false }) {
               </div>
               <input
                 autoComplete="nope"
-                value={searchForm.productID}
+                value={searchForm?.productID}
                 placeholder="Product ID"
                 className={defaultSearchStyle}
                 onChange={(e) => handlerSearchValue(e, "productID")}
+              />
+            </div>
+            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row  font-title flex-1 px-2">
+              <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center text-gray-400">
+                <ProductIDIcon />
+              </div>
+              <input
+                type="tel"
+                autoComplete="nope"
+                value={searchForm?.amount}
+                placeholder="Amount"
+                className={defaultSearchStyle}
+                onChange={(e) => handlerSearchValue(e, "amount")}
               />
             </div>
             <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
@@ -115,10 +130,23 @@ function ProductTable({ showAdvanceSearch = false }) {
               </div>
               <input
                 autoComplete="nope"
-                value={searchForm.name}
+                value={searchForm?.name}
                 placeholder="Product Name"
                 className={defaultSearchStyle}
                 onChange={(e) => handlerSearchValue(e, "name")}
+              />
+            </div>
+            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row  font-title flex-1 px-2">
+              <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center text-gray-400">
+                <ProductIDIcon />
+              </div>
+              <input
+                type="date"
+                autoComplete="nope"
+                value={searchForm?.createdAt}
+                placeholder="CreatedAt Date"
+                className={defaultSearchStyle}
+                onChange={(e) => handlerSearchValue(e, "createdAt")}
               />
             </div>
           </div>
@@ -136,6 +164,9 @@ function ProductTable({ showAdvanceSearch = false }) {
           <div className="sm:text-left text-default-color font-title flex-1">
             Amount
           </div>
+          <div className="sm:text-left text-default-color font-title flex-1">
+            CreatedAt
+          </div>
           <div className="sm:text-left text-default-color font-title sm:w-11">
             Action
           </div>
@@ -144,15 +175,15 @@ function ProductTable({ showAdvanceSearch = false }) {
         <div>
           {currentItems &&
             currentItems.map((product) => (
-              <div className={defaultTdWrapperStyle} key={product.id}>
+              <div className={defaultTdWrapperStyle} key={product?.id}>
                 <div className={defaultTdStyle}>
                   <div className={defaultTdContentTitleStyle}>ProductID</div>
                   <div className={defaultTdContent}>
-                    {product.image ? (
+                    {product?.image ? (
                       <img
                         className="object-cover h-10 w-10 rounded-2xl"
-                        src={product.image}
-                        alt={product.name}
+                        src={product?.image}
+                        alt={product?.name}
                       />
                     ) : (
                       <span className="h-10 w-10 rounded-2xl bg-gray-100 flex justify-center items-center">
@@ -160,7 +191,7 @@ function ProductTable({ showAdvanceSearch = false }) {
                       </span>
                     )}
                     <span className="whitespace-nowrap text-ellipsis overflow-hidden pl-1">
-                      {product.productID || "#"}
+                      {product?.productID || "#"}
                     </span>
                   </div>
                 </div>
@@ -169,7 +200,7 @@ function ProductTable({ showAdvanceSearch = false }) {
                   <div className={defaultTdContentTitleStyle}>Name</div>
                   <div className={defaultTdContent}>
                     <span className="whitespace-nowrap text-ellipsis overflow-hidden">
-                      {product.name}
+                      {product?.name}
                     </span>
                   </div>
                 </div>
@@ -178,7 +209,16 @@ function ProductTable({ showAdvanceSearch = false }) {
                   <div className={defaultTdContentTitleStyle}>Amount</div>
                   <div className={defaultTdContent}>
                     <span className="whitespace-nowrap text-ellipsis overflow-hidden">
-                      {product.amount}
+                      {product?.amount}
+                    </span>
+                  </div>
+                </div>
+
+                <div className={defaultTdStyle}>
+                  <div className={defaultTdContentTitleStyle}>Amount</div>
+                  <div className={defaultTdContent}>
+                    <span className="whitespace-nowrap text-ellipsis overflow-hidden">
+                      {product?.createdAt}
                     </span>
                   </div>
                 </div>
@@ -245,5 +285,3 @@ function ProductTable({ showAdvanceSearch = false }) {
     </>
   );
 }
-
-export default ProductTable;

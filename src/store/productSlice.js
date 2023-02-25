@@ -13,6 +13,7 @@ const initialState = {
     image: "",
     name: "",
     amount: 0,
+    createdAt: new Date().toISOString(),
   },
   editedID: null,
   deletedID: null,
@@ -33,6 +34,7 @@ export const productSlice = createSlice({
         productID: "",
         name: "",
         amount: 0,
+        createdAt: new Date().toISOString(),
       };
 
       state.newForm = { ...reNewForm };
