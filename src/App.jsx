@@ -7,12 +7,11 @@ import {
 import { ToastContainer } from "react-toastify";
 import { useEffect } from "react";
 
-import Home from "./pages/home";
-
+import Dashboard from "./pages/home/Dashboard";
 import Profile from "./pages/Profile";
 
 import ClientList from "./pages/clients";
-import AddClient from "./pages/clients/AddClient";
+import AddClient from "./pages/clients/AddClient"
 
 import ProductList from "./pages/products";
 import AddProduct from "./pages/products/AddProduct";
@@ -60,7 +59,7 @@ function Routing() {
     <Routers>
       <Container>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Dashboard />} />
 
           <Route path="/profile" element={<Profile />} />
 

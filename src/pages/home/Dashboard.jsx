@@ -8,7 +8,7 @@ import ClientTable from "../../components/Clients/ClientTable";
 import InvoiceTable from "../../components/Invoice/InvoiceTable";
 import ProductTable from "../../components/Product/ProductTable";
 
-export default function DashboardScreen() {
+export default function Dashboard() {
   const navigate = useNavigate();
 
   const goToNewInvoice = useCallback(() => {
