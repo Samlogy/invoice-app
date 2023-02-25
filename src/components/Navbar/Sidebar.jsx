@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
+import localforage from "localforage";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import { useSelector } from "react-redux";
@@ -7,12 +8,14 @@ import HomeIcon from "../Icons/HomeIcon";
 import ProductIcon from "../Icons/ProductIcon";
 import InvoiceIcon from "../Icons/InvoiceIcon";
 import ClientPlusIcon from "../Icons/ClientPlusIcon";
-import DeleteIcon from "../Icons/DeleteIcon";
-import SecurityIcon from "../Icons/SecurityIcon";
+// import DeleteIcon from "../Icons/DeleteIcon";
+// import SecurityIcon from "../Icons/SecurityIcon";
 import InvoiceNavbarLoading from "../Loading/InvoiceNavbarLoading";
 import { getCompanyData } from "../../store/companySlice";
 import Skeleton from "react-loading-skeleton";
 import Button from "../Button/Button";
+
+import ALL_KEYS from "../../constants/localKeys";
 
 const NAV_DATA = [
   {
@@ -76,9 +79,26 @@ export default function Sidebar() {
   }, [showNavbar, toggleNavbar]);
 
   // const aboutRoute = useMemo(() => pathname === "/about", [pathname]);
-  const clearData = () => {};
+  const clearData = () => {
+    localforage.clear()
+  };
   const importData = () => {};
-  const exportData = () => {};
+  const exportData = () => {
+    const exportName = "business_app_data"
+    let appData = []
+
+    const appKeys = Object.values(ALL_KEYS)
+    appKeys.map((item) => localforage.getItem(item).then(res => appData.push(res)))
+    if (appData) {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData));
+      const downloadAnchorNode = document.createElement('a');
+      downloadAnchorNode.setAttribute("href",     dataStr);
+      downloadAnchorNode.setAttribute("download", exportName + ".json");
+      document.body.appendChild(downloadAnchorNode); // required for firefox
+      downloadAnchorNode.click();
+      downloadAnchorNode.remove();
+    }
+  };
 
   return (
     <>
