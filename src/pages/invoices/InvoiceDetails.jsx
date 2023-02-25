@@ -651,9 +651,9 @@ export default function InvoiceDetail(props) {
                 ? "py-5 px-8 bg-cover bg-center bg-slate-50 rounded-xl flex flex-row justify-between items-center"
                 : "py-9 px-8 bg-cover bg-center bg-slate-50 rounded-xl flex flex-col sm:flex-row justify-between items-center"
             }
-            style={{
-              backgroundImage: `url(${invoiceForm?.backgroundImage?.base64})`,
-            }}
+            // style={{
+            //   backgroundImage: `url(${invoiceForm?.backgroundImage?.base64})`,
+            // }}
           >
             <div
               className={
@@ -675,8 +675,8 @@ export default function InvoiceDetail(props) {
               <div
                 className={
                   isExporting
-                    ? "text-white font-title text-left"
-                    : "text-white font-title text-center sm:text-left"
+                    ? "text-black font-title text-left"
+                    : "text-black font-title text-center sm:text-left"
                 }
               >
                 <p className="font-bold mb-2">
@@ -695,7 +695,7 @@ export default function InvoiceDetail(props) {
                 </p>
               </div>
             </div>
-            <div className="text-white font-title font-bold text-5xl mt-5 sm:mt-0">
+            <div className="text-black font-title font-bold text-5xl mt-5 sm:mt-0">
               Invoice
             </div>
           </div>
