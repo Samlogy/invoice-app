@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 
-function Button(props) {
+export default function Button(props) {
   const {
     children,
     size = "",
@@ -67,5 +67,3 @@ function Button(props) {
     </motion.button>
   );
 }
-
-export default Button;
