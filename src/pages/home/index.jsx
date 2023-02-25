@@ -36,7 +36,7 @@ export default function DashboardScreen() {
         <div className="w-full pl-4 pr-4 sm:pl-4 sm:pr-0 mb-4 sm:mb-1">
           <DashboardWidgets />
 
-          <Button onClick={goToNewInvoice} block={1}>
+          <Button onClick={goToNewInvoice} addStyle="flex ml-auto w-[10rem] mb-4">
             <InvoiceIcon />
             <span className="inline-block ml-2"> New Invoice </span>
           </Button>
@@ -44,7 +44,7 @@ export default function DashboardScreen() {
             <InvoiceTable />
           </div>
 
-          <Button onClick={goToNewProduct} block={1}>
+          <Button onClick={goToNewProduct} addStyle="flex ml-auto w-[10rem] mb-4">
             <InvoiceIcon />
             <span className="inline-block ml-2"> New Product </span>
           </Button>
@@ -52,7 +52,7 @@ export default function DashboardScreen() {
             <ProductTable />
           </div>
 
-          <Button onClick={goToNewClients} block={1}>
+          <Button onClick={goToNewClients} addStyle="flex ml-auto w-[10rem] mb-4">
             <InvoiceIcon />
             <span className="inline-block ml-2"> New Client </span>
           </Button>
