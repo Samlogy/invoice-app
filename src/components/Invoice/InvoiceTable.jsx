@@ -22,9 +22,12 @@ const itemsPerPage = 10;
 const emptySearchForm = {
   invoiceNo: "",
   clientName: "",
+  createdAt: "",
+  amount: "",
+  status: "",
 };
 
-function InvoiceTable({ showAdvanceSearch = false }) {
+export default function InvoiceTable({ showAdvanceSearch = false }) {
   const { initLoading } = useAppContext();
   const dispatch = useDispatch();
   const allInvoices = useSelector(getAllInvoiceSelector);
@@ -37,15 +40,15 @@ function InvoiceTable({ showAdvanceSearch = false }) {
 
   const invoices = useMemo(() => {
     let filterData = allInvoices.length > 0 ? [...allInvoices].reverse() : [];
-    if (searchForm.invoiceNo?.trim()) {
+    if (searchForm?.invoiceNo?.trim()) {
       filterData = filterData.filter((invoice) =>
-        invoice.invoiceNo.includes(searchForm.invoiceNo)
+        invoice.invoiceNo.includes(searchForm?.invoiceNo)
       );
     }
 
-    if (searchForm.clientName?.trim()) {
+    if (searchForm?.clientName?.trim()) {
       filterData = filterData.filter((invoice) =>
-        invoice.clientName.includes(searchForm.clientName)
+        invoice.clientName.includes(searchForm?.clientName)
       );
     }
 
@@ -59,16 +62,12 @@ function InvoiceTable({ showAdvanceSearch = false }) {
   };
 
   const handleDelete = useCallback(
-    (item) => {
-      dispatch(setDeleteId(item.id));
-    },
+    (item) => dispatch(setDeleteId(item.id)),
     [dispatch]
   );
 
   const handleEdit = useCallback(
-    (item) => {
-      navigate("/invoices/" + item.id);
-    },
+    (item) => navigate("/invoices/" + item.id),
     [navigate]
   );
 
@@ -101,7 +100,7 @@ function InvoiceTable({ showAdvanceSearch = false }) {
               </div>
               <input
                 autoComplete="nope"
-                value={searchForm.invoiceNo}
+                value={searchForm?.invoiceNo}
                 placeholder="Invoice No"
                 className={defaultSearchStyle}
                 onChange={(e) => handlerSearchValue(e, "invoiceNo")}
@@ -124,11 +123,52 @@ function InvoiceTable({ showAdvanceSearch = false }) {
               </div>
               <input
                 autoComplete="nope"
-                value={searchForm.clientName}
+                value={searchForm?.clientName}
                 placeholder="User Name"
                 className={defaultSearchStyle}
                 onChange={(e) => handlerSearchValue(e, "clientName")}
               />
+            </div>
+            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
+              <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
+                <InvoiceIcon className="h-6 w-6 text-gray-400" />
+              </div>
+              <input
+                type="tel"
+                autoComplete="nope"
+                value={searchForm?.amount}
+                placeholder="Invoice Amount"
+                className={defaultSearchStyle}
+                onChange={(e) => handlerSearchValue(e, "amount")}
+              />
+            </div>
+            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
+              <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
+                <InvoiceIcon className="h-6 w-6 text-gray-400" />
+              </div>
+              <input
+                type="date"
+                autoComplete="nope"
+                value={searchForm?.createdAt}
+                placeholder="Invoice CreatedAt"
+                className={defaultSearchStyle}
+                onChange={(e) => handlerSearchValue(e, "createdAt")}
+              />
+            </div>
+            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
+              <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
+                <InvoiceIcon className="h-6 w-6 text-gray-400" />
+              </div>
+              <select
+                placeholder="Invoice status"
+                className={defaultSearchStyle}
+                onChange={(e) => handlerSearchValue(e, "status")}
+              >
+                <option> Status </option>
+                <option value="draft">Draft</option>
+                <option value="unpaid">Unpaid</option>
+                <option value="paid">Paid</option>
+              </select>
             </div>
           </div>
         </div>
@@ -277,5 +317,3 @@ function InvoiceTable({ showAdvanceSearch = false }) {
     </>
   );
 }
-
-export default InvoiceTable;
