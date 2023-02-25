@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useAppContext } from "../../context/AppContext";
 import InvoiceNavbarLoading from "../Loading/InvoiceNavbarLoading";
 
-function Navbar() {
+export default function Navbar() {
   const { toggleNavbar, showNavbar } = useAppContext();
 
   const classes = useMemo(() => {
@@ -83,5 +83,3 @@ function Navbar() {
     </header>
   );
 }
-
-export default Navbar;

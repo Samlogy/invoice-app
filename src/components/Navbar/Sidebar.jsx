@@ -112,7 +112,7 @@ export default function Sidebar() {
         </div>
 
         {initLoading && <Skeleton className="px-4 py-5 rounded-md" />}
-        {!!company?.image && !initLoading && (
+        {!!company?.avatar && !initLoading && (
           <motion.span
             className={
               navItemDefaultClasses + " bg-gray-50 flex items-center px-3"
@@ -120,11 +120,11 @@ export default function Sidebar() {
           >
             <img
               className={"object-cover h-10 w-10 rounded-lg"}
-              src={company?.image}
+              src={company?.avatar}
               alt="upload_image"
             />
-            <span className="flex-1 pl-2 font-title rounded-r py-1 border-r-4 border-indigo-400 flex items-center inline-block whitespace-nowrap text-ellipsis overflow-hidden ">
-              {company.companyName}
+            <span className="flex-1 pl-2 font-title rounded-r py-1 border-r-4 border-indigo-400 flex items-center whitespace-nowrap text-ellipsis overflow-hidden ">
+              {company?.name}
             </span>
           </motion.span>
         )}

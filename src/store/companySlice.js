@@ -5,11 +5,12 @@ import { COMPANY_KEY } from "../constants/localKeys";
 const initialState = {
   data: {
     id: "companyID",
-    image: "",
-    billingAddress: "",
-    companyName: "",
-    companyEmail: "",
-    companyMobile: "",
+    avatar: "",
+    name: "",
+    email: "",
+    mobile: "",
+    address: "",
+    website: "",
   },
 };
 
@@ -19,18 +20,14 @@ export const companySlice = createSlice({
   reducers: {
     updateCompanyData: (state, action) => {
       try {
-        const {
-          image,
-          billingAddress,
-          companyName,
-          companyEmail,
-          companyMobile,
-        } = action.payload;
-        state.data.image = image ? image : "";
-        state.data.billingAddress = billingAddress ? billingAddress : "";
-        state.data.companyName = companyName ? companyName : "";
-        state.data.companyEmail = companyEmail ? companyEmail : "";
-        state.data.companyMobile = companyMobile ? companyMobile : "";
+        const { avatar, address, name, email, mobile, website } =
+          action.payload;
+        state.data.avatar = avatar ? avatar : "";
+        state.data.address = address ? address : "";
+        state.data.name = name ? name : "";
+        state.data.email = email ? email : "";
+        state.data.mobile = mobile ? mobile : "";
+        state.data.website = website ? website : "";
         localforage.setItem(COMPANY_KEY, action.payload);
       } catch (e) {
         console.log(e);
