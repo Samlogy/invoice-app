@@ -12,7 +12,7 @@ import {
 } from "../../store/invoiceSlice";
 import NumberFormat from "react-number-format";
 
-function DashboardWidgets() {
+export default function DashboardWidgets() {
   const clients = useSelector(getAllClientsSelector);
   const products = useSelector(getAllProductSelector);
   const allInvoices = useSelector(getAllInvoiceSelector);
@@ -22,16 +22,16 @@ function DashboardWidgets() {
   const incomes = 0;
 
   const OPTIONS = [
-    {
-      label: "Incomes",
-      icon: <LottieMoney loop className="h-20" />,
-      data: incomes,
-    },
-    {
-      label: "Expenses",
-      icon: <LottieMoney loop className="h-20" />,
-      data: expenses,
-    },
+    // {
+    //   label: "Incomes",
+    //   icon: <LottieMoney loop className="h-20" />,
+    //   data: incomes,
+    // },
+    // {
+    //   label: "Expenses",
+    //   icon: <LottieMoney loop className="h-20" />,
+    //   data: expenses,
+    // },
     {
       label: "Invoices",
       icon: <LottieMoney loop className="h-20" />,
@@ -82,5 +82,3 @@ function DashboardWidgets() {
     </>
   );
 }
-
-export default DashboardWidgets;

@@ -14,14 +14,15 @@ export default function InvoiceEstimateTemplate({ title }) {
 
   return (
     <div>
-     <div className="flex flex-col sm:flex-row flex-wrap items-center justify-between">
+      <div className="flex flex-col sm:flex-row flex-wrap items-center justify-between">
         <div className="p-4">
           <PageTitle title={title} />
         </div>
 
         <div className="p-4">
-          <Button size="sm" block={1} onClick={goToNew}>
-            {title}
+          <Button addStyle="flex ml-auto w-[10rem] mb-4 capitalize" onClick={goToNew}>
+            <InvoiceIcon />
+            Add {title}
           </Button>
         </div>
       </div>
