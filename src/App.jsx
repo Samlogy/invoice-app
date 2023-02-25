@@ -18,22 +18,29 @@ import AddProduct from "./pages/products/AddProduct";
 import InvoiceList from "./pages/invoices";
 import InvoiceDetails from "./pages/invoices/InvoiceDetails";
 
-import IncomesList from "./pages/incomes";
-import IncomeDetails from "./pages/incomes/IncomeDetails";
-// import InvoiceDetails from "./pages/invoices/InvoiceDetails";
+// import IncomesList from "./pages/incomes";
+// import AddIncome from "./pages/incomes/AddIncome";
 
+import PageLoading from "./components/Common/PageLoading";
 import Container from "./components/Container/Container";
-import useInitApp from "./hook/useInitApp";
+
 import ClientDeleteConfirm from "./components/Clients/ClientDeleteConfirm";
 import ClientEditModal from "./components/Clients/ClientEditModal";
+import ClientChooseModal from "./components/Clients/ClientChooseModal";
+
 import ProductDeleteConfirm from "./components/Product/ProductDeleteConfirm";
 import ProductEditModal from "./components/Product/ProductEditModal";
-import ClientChooseModal from "./components/Clients/ClientChooseModal";
 import ProductChoosenModal from "./components/Product/ProductChoosenModal";
+
 import InvoiceSettingModal from "./components/Invoice/InvoiceSettingModal";
 import InvoiceConfirmModal from "./components/Invoice/InvoiceConfirmModal";
 import InvoiceDeleteConfirm from "./components/Invoice/InvoiceDeleteConfirm";
-import PageLoading from "./components/Common/PageLoading";
+
+// import IncomeEditModal from "./components/income/IncomeEditModal";
+// import IncomeDeleteModal from "./components/income/IncomeDeleteModal"
+// import IncomeChooseModal from "./components/income/IncomeChooseModal"
+
+import useInitApp from "./hook/useInitApp";
 
 export default function App() {
   const { initialSetData } = useInitApp();
@@ -68,38 +75,32 @@ function Routing() {
             <Route path=":id" element={<InvoiceDetails />} />
           </Route>
 
-          <Route path="incomes">
+          {/* <Route path="incomes">
             <Route path="" element={<IncomesList />} exact />
-            <Route path=":id" element={<IncomeDetails />} />
-          </Route>
-
-          {/* <Route path="estimates">
-            <Route path="" element={<EstimateList />} exact />
-          </Route> */}
-
-          {/* <Route path="expenses">
-            <Route path="" element={<InvoiceList />} exact />
-            <Route path=":id" element={<InvoiceDetails />} />
-          </Route>
-
-          <Route path="incomes">
-            <Route path="" element={<InvoiceList />} exact />
-            <Route path=":id" element={<InvoiceDetails />} />
+            <Route path=":id" element={<AddIncome />} />
           </Route> */}
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Container>
       <ToastContainer />
+
       <ClientDeleteConfirm />
       <ClientEditModal />
       <ClientChooseModal />
+
       <ProductDeleteConfirm />
       <ProductEditModal />
       <ProductChoosenModal />
+
       <InvoiceSettingModal />
       <InvoiceConfirmModal />
       <InvoiceDeleteConfirm />
+
+      {/* <IncomeEditModal />
+      <IncomeDeleteModal />
+      <IncomeChooseModal /> */}
+
       <PageLoading />
     </Routers>
   );

@@ -34,21 +34,21 @@ const NAV_DATA = [
     link: "invoices",
     Icon: InvoiceIcon,
   },
-  {
-    title: "Estimates",
-    link: "estimates",
-    Icon: InvoiceIcon,
-  },
-  {
-    title: "Expenses",
-    link: "expenses",
-    Icon: InvoiceIcon,
-  },
-  {
-    title: "Incomes",
-    link: "incomes",
-    Icon: InvoiceIcon,
-  },
+  // {
+  //   title: "Estimates",
+  //   link: "estimates",
+  //   Icon: InvoiceIcon,
+  // },
+  // {
+  //   title: "Expenses",
+  //   link: "expenses",
+  //   Icon: InvoiceIcon,
+  // },
+  // {
+  //   title: "Incomes",
+  //   link: "incomes",
+  //   Icon: InvoiceIcon,
+  // },
 ];
 
 const navDefaultClasses =

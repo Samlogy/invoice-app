@@ -10,51 +10,57 @@ import {
   defaultSearchStyle,
 } from "../../constants/defaultStyles";
 import ReactPaginate from "react-paginate";
-import { getAllInvoiceSelector, setDeleteId } from "../../store/invoiceSlice";
+import { getAllInvoiceSelector, setDeleteId, setEditedId } from "../../store/invoiceSlice";
 import { useNavigate } from "react-router-dom";
 import NumberFormat from "react-number-format";
-import InvoiceIcon from "../Icons/InvoiceIcon";
+import InvoiceIcon from "../../Icons/InvoiceIcon";
 import { useAppContext } from "../../context/AppContext";
 import EmptyBar from "../Common/EmptyBar";
 
 // Example items, to simulate fetching from another resources.
 const itemsPerPage = 10;
 const emptySearchForm = {
-  invoiceNo: "",
-  clientName: "",
+  createdAt: "",
+  name: "",
+  price: ""
 };
 
 function IncomeTable({ showAdvanceSearch = false }) {
   const { initLoading } = useAppContext();
   const dispatch = useDispatch();
-  const allInvoices = useSelector(getAllInvoiceSelector);
-  const navigate = useNavigate();
+  const allIncomes = useSelector(getAllInvoiceSelector);
 
   const [searchForm, setSearchForm] = useState(emptySearchForm);
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
 
-  const invoices = useMemo(() => {
-    let filterData = allInvoices.length > 0 ? [...allInvoices].reverse() : [];
-    if (searchForm.invoiceNo?.trim()) {
-      filterData = filterData.filter((invoice) =>
-        invoice.invoiceNo.includes(searchForm.invoiceNo)
+  const incomes = useMemo(() => {
+    let filterData = allIncomes?.length > 0 ? [...allIncomes].reverse() : [];
+    if (searchForm.createdAt?.trim()) {
+      filterData = filterData.filter((income) =>
+        income?.createdAt.includes(searchForm.createdAt)
       );
     }
 
-    if (searchForm.clientName?.trim()) {
-      filterData = filterData.filter((invoice) =>
-        invoice.clientName.includes(searchForm.clientName)
+    if (searchForm.name?.trim()) {
+      filterData = filterData.filter((income) =>
+        income?.name.includes(searchForm.name)
+      );
+    }
+
+    if (searchForm.price?.trim()) {
+      filterData = filterData.filter((income) =>
+        income?.price.includes(searchForm.price)
       );
     }
 
     return filterData;
-  }, [allInvoices, searchForm]);
+  }, [allIncomes, searchForm]);
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % invoices.length;
+    const newOffset = (event.selected * itemsPerPage) % incomes.length;
     setItemOffset(newOffset);
   };
 
@@ -67,9 +73,9 @@ function IncomeTable({ showAdvanceSearch = false }) {
 
   const handleEdit = useCallback(
     (item) => {
-      navigate("/invoices/" + item.id);
+      dispatch(setEditedId(item.id));
     },
-    [navigate]
+    [dispatch]
   );
 
   const handlerSearchValue = useCallback((event, keyName) => {
@@ -85,9 +91,9 @@ function IncomeTable({ showAdvanceSearch = false }) {
   useEffect(() => {
     // Fetch items from another resources.
     const endOffset = itemOffset + itemsPerPage;
-    setCurrentItems(invoices.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(invoices.length / itemsPerPage));
-  }, [invoices, itemOffset]);
+    setCurrentItems(incomes?.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(incomes?.length / itemsPerPage));
+  }, [incomes, itemOffset]);
 
   return (
     <>
@@ -100,11 +106,12 @@ function IncomeTable({ showAdvanceSearch = false }) {
                 <InvoiceIcon className="h-6 w-6 text-gray-400" />
               </div>
               <input
+                type="date"
                 autoComplete="nope"
-                value={searchForm.invoiceNo}
-                placeholder="Invoice No"
+                value={searchForm.createdAt}
+                placeholder="Date"
                 className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e, "invoiceNo")}
+                onChange={(e) => handlerSearchValue(e, "date")}
               />
             </div>
             <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
@@ -124,10 +131,34 @@ function IncomeTable({ showAdvanceSearch = false }) {
               </div>
               <input
                 autoComplete="nope"
-                value={searchForm.clientName}
-                placeholder="User Name"
+                value={searchForm.name}
+                placeholder="Income Name"
                 className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e, "clientName")}
+                onChange={(e) => handlerSearchValue(e, "name")}
+              />
+            </div>
+            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
+              <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-gray-400"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <input
+              type="tel"
+                autoComplete="nope"
+                value={searchForm.price}
+                placeholder="Income Price"
+                className={defaultSearchStyle}
+                onChange={(e) => handlerSearchValue(e, "price")}
               />
             </div>
           </div>
@@ -137,16 +168,16 @@ function IncomeTable({ showAdvanceSearch = false }) {
       <div className="sm:bg-white rounded-xl sm:px-3 sm:py-3">
         <div className="hidden sm:flex invisible sm:visible w-full flex-col sm:flex-row">
           <div className="sm:text-left text-default-color font-title flex-1">
-            Invoice Name
+            Name
           </div>
           <div className="sm:text-left text-default-color font-title flex-1">
-            Client Name
+            Description
           </div>
           <div className="sm:text-left text-default-color font-title flex-1">
-            Status
+            Price
           </div>
           <div className="sm:text-left text-default-color font-title flex-1">
-            Amount
+            Date
           </div>
           <div className="sm:text-left text-default-color font-title sm:w-11">
             Action
@@ -155,53 +186,38 @@ function IncomeTable({ showAdvanceSearch = false }) {
 
         <div>
           {currentItems &&
-            currentItems.map((invoice) => (
-              <div className={defaultTdWrapperStyle} key={invoice.id}>
+            currentItems.map((income) => (
+              <div className={defaultTdWrapperStyle} key={income?.id}>
                 <div className={defaultTdStyle}>
-                  <div className={defaultTdContentTitleStyle}>Invoice Name</div>
+                  <div className={defaultTdContentTitleStyle}>Name</div>
                   <div className={defaultTdContent}>
                     <span
-                      className="whitespace-nowrap text-ellipsis overflow-hidden text-blue-500 cursor-pointer"
-                      onClick={() => handleEdit(invoice)}
+                      className="whitespace-nowrap text-ellipsis overflow-hidden"
                     >
-                      {invoice.invoiceNo}
+                      {income?.name}
                     </span>
                   </div>
                 </div>
 
                 <div className={defaultTdStyle}>
-                  <div className={defaultTdContentTitleStyle}>Client Name</div>
+                  <div className={defaultTdContentTitleStyle}>Description</div>
                   <div className={defaultTdContent}>
                     <span className="whitespace-nowrap text-ellipsis overflow-hidden">
-                      {invoice.clientName}
+                      {income?.description}
                     </span>
                   </div>
                 </div>
 
                 <div className={defaultTdStyle}>
-                  <div className={defaultTdContentTitleStyle}>Status</div>
+                  <div className={defaultTdContentTitleStyle}>Price</div>
                   <div className={defaultTdContent}>
                     <span
                       className={
-                        "whitespace-nowrap text-ellipsis overflow-hidden px-3 rounded-xl  py-1 " +
-                        (invoice.statusIndex === "2"
-                          ? "bg-red-100 text-red-400"
-                          : invoice.statusIndex === "3"
-                          ? "bg-green-200 text-green-600"
-                          : "bg-gray-100 text-gray-600 ")
-                      }
+                        "whitespace-nowrap text-ellipsis overflow-hidden"}
                     >
-                      {invoice.statusName}
-                    </span>
-                  </div>
-                </div>
-
-                <div className={defaultTdStyle}>
-                  <div className={defaultTdContentTitleStyle}>Status</div>
-                  <div className={defaultTdContent + " "}>
-                    <span className="whitespace-nowrap text-ellipsis overflow-hidden ">
+                      
                       <NumberFormat
-                        value={invoice.totalAmount}
+                        value={income?.price}
                         className=""
                         displayType={"text"}
                         thousandSeparator={true}
@@ -209,6 +225,15 @@ function IncomeTable({ showAdvanceSearch = false }) {
                           <span {...props}>{value}</span>
                         )}
                       />
+                    </span>
+                  </div>
+                </div>
+
+                <div className={defaultTdStyle}>
+                  <div className={defaultTdContentTitleStyle}>Date</div>
+                  <div className={defaultTdContent + " "}>
+                    <span className="whitespace-nowrap text-ellipsis overflow-hidden ">
+                      {income?.createdAt}
                     </span>
                   </div>
                 </div>
@@ -239,10 +264,10 @@ function IncomeTable({ showAdvanceSearch = false }) {
                       }
                       transition
                     >
-                      <MenuItem onClick={() => handleEdit(invoice)}>
-                        Detail
+                      <MenuItem onClick={() => handleEdit(income)}>
+                        Edit
                       </MenuItem>
-                      <MenuItem onClick={() => handleDelete(invoice)}>
+                      <MenuItem onClick={() => handleDelete(income)}>
                         Delete
                       </MenuItem>
                     </Menu>
@@ -251,11 +276,11 @@ function IncomeTable({ showAdvanceSearch = false }) {
               </div>
             ))}
 
-          {invoices.length <= 0 && !initLoading && (
-            <EmptyBar title={"Invoice"} />
+          {incomes.length <= 0 && !initLoading && (
+            <EmptyBar title={"Income"} />
           )}
 
-          {invoices.length > 0 && (
+          {incomes.length > 0 && (
             <ReactPaginate
               className="inline-flex items-center -space-x-px mt-2"
               previousLinkClassName="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"

@@ -27,11 +27,11 @@ const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 const emptyForm = {
   id: "",
+  image: "",
   name: "",
-  description: "",
-  price: "",
-  createdAt: new Date(),
-  editedAt: ""
+  email: "",
+  billingAddress: "",
+  mobileNo: "",
 };
 
 export default function AddIncome({ editForm }) {
@@ -40,18 +40,26 @@ export default function AddIncome({ editForm }) {
   const { initLoading: isInitLoading } = useAppContext();
 
   const [isTouched, setIsTouched] = useState(false);
-  const [incomeForm, setIncomeForm] = useState(emptyForm);
+  const [clientForm, setClientForm] = useState(emptyForm);
   const [validForm, setValidForm] = useState(
     Object.keys(emptyForm).reduce((a, b) => {
       return { ...a, [b]: false };
     }, {})
   );
 
+  const onChangeImage = useCallback(
+    (str) => {
+      setClientForm((prev) => ({ ...prev, image: str }));
+      dispatch(updateNewClientFormField({ key: "image", value: str }));
+    },
+    [dispatch]
+  );
+
   const handlerClientValue = useCallback(
     (event, keyName) => {
       const value = event.target.value;
 
-      setIncomeForm((prev) => {
+      setClientForm((prev) => {
         return { ...prev, [keyName]: value };
       });
 
@@ -78,68 +86,92 @@ export default function AddIncome({ editForm }) {
       autoClose: 2000,
     });
 
-    dispatch(addNewClient({ ...incomeForm, id: nanoid() }));
+    dispatch(addNewClient({ ...clientForm, id: nanoid() }));
     setIsTouched(false);
-  }, [incomeForm, dispatch, validForm]);
+  }, [clientForm, dispatch, validForm]);
+
+  const imageUploadClasses = useMemo(() => {
+    const defaultStyle = "rounded-xl ";
+
+    if (!clientForm.image) {
+      return defaultStyle + " border-dashed border-2 border-indigo-400 ";
+    }
+
+    return defaultStyle;
+  }, [clientForm]);
 
   useEffect(() => {
+    const isValidEmail =
+      clientForm?.email?.trim() && clientForm?.email.match(emailRegex);
+
     setValidForm((prev) => ({
       id: true,
-      description: incomeForm?.description ? true : false,
-      name: incomeForm?.name ? true : false,
-      createdAt:incomeForm?.createdAt ? true : false,
-      price: incomeForm?.price ? true : false,
+      image: true,
+      name: clientForm?.name?.trim() ? true : false,
+      email: isValidEmail ? true : false,
+      billingAddress: clientForm?.billingAddress?.trim() ? true : false,
+      mobileNo: clientForm?.mobileNo?.trim() ? true : false,
     }));
-  }, [incomeForm]);
+  }, [clientForm]);
 
   useEffect(() => {
     if (clientNewForm) {
-      setIncomeForm(clientNewForm);
+      setClientForm(clientNewForm);
     }
   }, [clientNewForm]);
 
   const navigate = useNavigate();
-  const onClickBack = () => navigate(-1);
+
+  function onClickBack() {
+    navigate(-1);
+  }
 
   return (
     <div>
-      <div className="flex flex-col sm:flex-row flex-wrap items-center justify-between">
-        <div className="p-4">
-          <PageTitle title={"Income"} />
-        </div>
-
-        <div className="p-4">
-          <Button size="sm" block={1} onClick={onClickBack}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d={"M15 19l-7-7 7-7"}
-              />
-            </svg>
-          </Button>
-        </div>
+      <div className="p-4">
+        <PageTitle title={"Income"} />
       </div>
+
+      <Button size="sm" block={1} onClick={onClickBack}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d={"M15 19l-7-7 7-7"}
+            />
+          </svg>
+      </Button>
 
       <div className="flex flex-wrap">
         <div className="w-full lg:w-3/5 pl-4 pr-4 sm:pl-4 sm:pr-0 mb-4 sm:mb-1">
           <div className="flex mt-2">
-            <div className="flex-1">
+            {isInitLoading ? (
+              <Skeleton className="skeleton-input-radius skeleton-image border-dashed border-2" />
+            ) : (
+              <ImageUpload
+                keyName="QuickEditImageUpload"
+                className={imageUploadClasses}
+                url={clientForm.image}
+                onChangeImage={onChangeImage}
+              />
+            )}
+
+            <div className="flex-1 pl-3">
               {isInitLoading ? (
                 <Skeleton className={defaultSkeletonLargeStyle} />
               ) : (
                 <div>
                   <input
                     autoComplete="nope"
-                    value={incomeForm.name}
-                    placeholder="Income Name"
+                    value={clientForm.name}
+                    placeholder="User Name"
                     className={
                       !validForm.name && isTouched
                         ? defaultInputLargeInvalidStyle
@@ -152,23 +184,22 @@ export default function AddIncome({ editForm }) {
               )}
             </div>
           </div>
-
           <div className="flex mt-2">
             <div className="flex-1">
               {isInitLoading ? (
                 <Skeleton className={defaultSkeletonNormalStyle} />
               ) : (
-                <textarea
+                <input
                   autoComplete="nope"
-                  placeholder="Description"
+                  placeholder="Email Address"
                   className={
-                    !validForm.description && isTouched
+                    !validForm.email && isTouched
                       ? defaultInputInvalidStyle
                       : defaultInputStyle
                   }
                   disabled={isInitLoading}
-                  value={incomeForm.description}
-                  onChange={(e) => handlerClientValue(e, "description")}
+                  value={clientForm.email}
+                  onChange={(e) => handlerClientValue(e, "email")}
                 />
               )}
             </div>
@@ -179,39 +210,36 @@ export default function AddIncome({ editForm }) {
                 <Skeleton className={defaultSkeletonNormalStyle} />
               ) : (
                 <input
-                  type="tel"
                   autoComplete="nope"
-                  placeholder="Price"
+                  placeholder="Mobile No"
                   className={
-                    !validForm.price && isTouched
+                    !validForm.mobileNo && isTouched
                       ? defaultInputInvalidStyle
                       : defaultInputStyle
                   }
                   disabled={isInitLoading}
-                  value={incomeForm.price}
-                  onChange={(e) => handlerClientValue(e, "price")}
+                  value={clientForm.mobileNo}
+                  onChange={(e) => handlerClientValue(e, "mobileNo")}
                 />
               )}
             </div>
           </div>
-
           <div className="flex mt-2">
             <div className="flex-1">
               {isInitLoading ? (
                 <Skeleton className={defaultSkeletonNormalStyle} />
               ) : (
                 <input
-                  type="date"
                   autoComplete="nope"
-                  placeholder="createdAt"
+                  placeholder="Billing Address"
                   className={
-                    !validForm.createdAt && isTouched
+                    !validForm.billingAddress && isTouched
                       ? defaultInputInvalidStyle
                       : defaultInputStyle
                   }
                   disabled={isInitLoading}
-                  value={incomeForm.createdAt}
-                  onChange={(e) => handlerClientValue(e, "createdAt")}
+                  value={clientForm.billingAddress}
+                  onChange={(e) => handlerClientValue(e, "billingAddress")}
                 />
               )}
             </div>

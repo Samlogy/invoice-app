@@ -20,12 +20,12 @@ export default function DashboardScreen() {
   const goToNewClients = useCallback(() => {
     navigate("/clients/new");
   }, [navigate]);
-  const goToNewIncome = useCallback(() => {
-    navigate("/incomes/new");
-  }, [navigate]);
-  const goToNewExpense = useCallback(() => {
-    navigate("/expenses/new");
-  }, [navigate]);
+  // const goToNewIncome = useCallback(() => {
+  //   navigate("/incomes/new");
+  // }, [navigate]);
+  // const goToNewExpense = useCallback(() => {
+  //   navigate("/expenses/new");
+  // }, [navigate]);
 
   return (
     <div>
@@ -60,23 +60,23 @@ export default function DashboardScreen() {
             <ClientTable />
           </div>
 
-          <Button onClick={goToNewIncome} block={1}>
+          {/* <Button onClick={goToNewIncome} block={1}>
             <InvoiceIcon />
             <span className="inline-block ml-2"> New Income </span>
           </Button>
           <div className="mt-4">
-            {/* <ClientTable /> */}
+            <ClientTable />
             income table
-          </div>
+          </div> */}
 
-          <Button onClick={goToNewExpense} block={1}>
+          {/* <Button onClick={goToNewExpense} block={1}>
             <InvoiceIcon />
             <span className="inline-block ml-2"> New Expense </span>
           </Button>
           <div className="mt-4">
-            {/* <ClientTable /> */}
+            <ClientTable />
             expense table
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
