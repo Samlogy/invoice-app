@@ -9,6 +9,8 @@ import { useEffect } from "react";
 
 import Home from "./pages/home";
 
+import Profile from "./pages/Profile";
+
 import ClientList from "./pages/clients";
 import AddClient from "./pages/clients/AddClient";
 
@@ -59,6 +61,8 @@ function Routing() {
       <Container>
         <Routes>
           <Route path="/" element={<Home />} />
+
+          <Route path="/profile" element={<Profile />} />
 
           <Route path="clients">
             <Route path="" element={<ClientList />} exact />

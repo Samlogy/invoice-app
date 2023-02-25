@@ -12,6 +12,7 @@ import SecurityIcon from "../Icons/SecurityIcon";
 import InvoiceNavbarLoading from "../Loading/InvoiceNavbarLoading";
 import { getCompanyData } from "../../store/companySlice";
 import Skeleton from "react-loading-skeleton";
+import Button from "../Button/Button";
 
 const NAV_DATA = [
   {
@@ -33,6 +34,11 @@ const NAV_DATA = [
     title: "Invoices",
     link: "invoices",
     Icon: InvoiceIcon,
+  },
+  {
+    title: "Profile",
+    link: "profile",
+    Icon: ClientPlusIcon,
   },
   // {
   //   title: "Estimates",
@@ -56,7 +62,7 @@ const navDefaultClasses =
 
 const navItemDefaultClasses = "block px-4 py-2 rounded-md flex flex-1";
 
-function Sidebar() {
+export default function Sidebar() {
   const { showNavbar, initLoading, toggleNavbar } = useAppContext();
   // const { pathname } = useLocation();
   const company = useSelector(getCompanyData);
@@ -70,6 +76,9 @@ function Sidebar() {
   }, [showNavbar, toggleNavbar]);
 
   // const aboutRoute = useMemo(() => pathname === "/about", [pathname]);
+  const clearData = () => {};
+  const importData = () => {};
+  const exportData = () => {};
 
   return (
     <>
@@ -159,62 +168,22 @@ function Sidebar() {
 
         <hr />
 
-        {/* <div className="my-4">
-          <NavLink to={"about"}>
-            <motion.span
-              className="block px-4 py-2 rounded-md flex text-default-color"
-              style={{
-                color: aboutRoute ? "rgb(14 136 14)" : "#777",
-              }}
-              whileHover={{
-                scale: [1.03, 1, 1.03, 1, 1.03, 1, 1.03, 1],
-                color: "rgb(14 136 14)",
-                textShadow: "0px 0px 3px #85FF66",
-                transition: {
-                  backgroundColor: {
-                    type: "spring",
-                    damping: 18,
-                  },
-                },
-              }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <SecurityIcon className="h-6 w-6 mr-4" />
-              About Me
-            </motion.span>
-          </NavLink>
-        </div> */}
-
-        <hr />
-
-        <div className="mt-4">
-          <motion.a
-            href={"#!"}
-            className="block px-4 py-2 rounded-md flex"
-            initial={{
-              color: "#EC7474",
-              backgroundColor: "#FFEEEE",
-            }}
-            whileHover={{
-              translateX: 6,
-              color: "#777",
-              backgroundColor: "#dfdfdf",
-              transition: {
-                backgroundColor: {
-                  type: "spring",
-                  damping: 18,
-                },
-              },
-            }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <DeleteIcon className="h-6 w-6 mr-4" />
-            Clear Data
-          </motion.a>
-        </div>
+        <Button
+          onClick={clearData}
+          size="sm"
+          addStyle="mb-4 mt-4"
+          block
+          outlined
+        >
+          <span className="inline-block ml-2"> Clear Data </span>
+        </Button>
+        <Button onClick={importData} size="sm" addStyle="mb-4" block outlined>
+          <span className="inline-block ml-2"> Import Data </span>
+        </Button>
+        <Button onClick={exportData} size="sm" addStyle="mb-4" block outlined>
+          <span className="inline-block ml-2"> Export Data </span>
+        </Button>
       </nav>
     </>
   );
 }
-
-export default Sidebar;

@@ -10,6 +10,7 @@ function Button(props) {
     secondary = false,
     success = false,
     danger = false,
+    addStyle = "",
   } = props;
 
   const buttonClasses = useMemo(() => {
@@ -59,7 +60,7 @@ function Button(props) {
       }}
       whileTap={{ scale: 0.9 }}
       type="button"
-      className={`${buttonClasses} flex ml-auto w-[10rem] mb-4`}
+      className={`${buttonClasses} ${addStyle}`}
       {...props}
     >
       {children}
