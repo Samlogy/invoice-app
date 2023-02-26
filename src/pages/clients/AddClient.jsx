@@ -34,7 +34,7 @@ const emptyForm = {
   mobileNo: "",
 };
 
-export default function AddClient({ editForm }) {
+export default function AddClient() {
   const dispatch = useDispatch();
   const clientNewForm = useSelector(getClientNewForm);
   const { initLoading: isInitLoading } = useAppContext();
@@ -86,7 +86,7 @@ export default function AddClient({ editForm }) {
       autoClose: 2000,
     });
 
-    dispatch(addNewClient({ ...clientForm, id: nanoid(), createdAt: new Date().toISOString(), editedAt: "" }));
+    dispatch(addNewClient({ ...clientForm, id: nanoid(), createdAt: new Date().toLocaleDateString(), editedAt: "" }));
     setIsTouched(false);
   }, [clientForm, dispatch, validForm]);
 

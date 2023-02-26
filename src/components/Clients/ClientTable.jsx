@@ -24,9 +24,9 @@ const emptySearchForm = {
   name: "",
   email: "",
   mobileNo: "",
-  createdAt: "",
-  editedAt: "",
   address: "",
+  createdAt: "",
+  editedAt: ""  
 };
 
 export default function ClientTable({ showAdvanceSearch = false }) {
@@ -41,21 +41,36 @@ export default function ClientTable({ showAdvanceSearch = false }) {
 
   const clients = useMemo(() => {
     let filterData = allClients.length > 0 ? [...allClients].reverse() : [];
-    if (searchForm?.name?.trim()) {
+    if (searchForm?.name) {
       filterData = filterData.filter((client) =>
-        client?.name.includes(searchForm?.name)
+        client?.name.toLowerCase().includes(searchForm?.name.toLowerCase())
       );
     }
 
     if (searchForm?.email?.trim()) {
       filterData = filterData.filter((client) =>
-        client?.email.includes(searchForm?.email)
+        client?.email.toLowerCase().includes(searchForm?.email.toLowerCase())
       );
     }
 
     if (searchForm?.mobileNo?.trim()) {
       filterData = filterData.filter((client) =>
-        client?.mobileNo.includes(searchForm?.mobileNo)
+        client?.mobileNo.toLowerCase().includes(searchForm?.mobileNo.toLowerCase())
+      );
+    }
+
+    if (searchForm?.address) {
+      filterData = filterData.filter((client) =>
+        client?.address.toLowerCase().includes(searchForm?.address.toLowerCase())
+      );
+    }
+
+    if (searchForm?.createdAt) {
+      const date = new Date(searchForm?.createdAt).toLocaleDateString()
+      console.log('date: ', date)
+      console.log('createdAt: ',filterData.createdAt)
+      filterData = filterData.filter((client) =>
+        client?.createdAt === searchForm?.date
       );
     }
 
@@ -69,22 +84,16 @@ export default function ClientTable({ showAdvanceSearch = false }) {
   };
 
   const handleDelete = useCallback(
-    (item) => {
-      dispatch(setDeleteId(item.id));
-    },
+    (item) =>  dispatch(setDeleteId(item.id)),
     [dispatch]
   );
 
   const handleEdit = useCallback(
-    (item) => {
-      dispatch(setEditedId(item.id));
-    },
+    (item) => dispatch(setEditedId(item.id)),
     [dispatch]
   );
 
-  const handlerSearchValue = useCallback((event, keyName) => {
-    const value = event.target.value;
-
+  const handlerSearchValue = useCallback((value, keyName) => {
     setSearchForm((prev) => {
       return { ...prev, [keyName]: value };
     });
@@ -104,7 +113,7 @@ export default function ClientTable({ showAdvanceSearch = false }) {
       {showAdvanceSearch === true && (
         <div className="bg-white rounded-xl px-3 py-3 mb-3">
           <div className="font-title mb-2">Advanced Search</div>
-          <div className="flex w-full flex-col sm:flex-row">
+          <div className="flex w-full flex-wrap flex-col sm:flex-row">
             <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
               <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
                 <svg
@@ -125,7 +134,7 @@ export default function ClientTable({ showAdvanceSearch = false }) {
                 value={searchForm?.name}
                 placeholder="User Name"
                 className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e, "name")}
+                onChange={(e) => handlerSearchValue(e.target.value, "name")}
               />
             </div>
             <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row  font-title flex-1 px-2">
@@ -150,7 +159,7 @@ export default function ClientTable({ showAdvanceSearch = false }) {
                 value={searchForm?.email}
                 placeholder="User Email"
                 className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e, "email")}
+                onChange={(e) => handlerSearchValue(e.target.value, "email")}
               />
             </div>
             <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row  font-title flex-1 px-2">
@@ -175,7 +184,7 @@ export default function ClientTable({ showAdvanceSearch = false }) {
                 value={searchForm?.mobileNo}
                 placeholder="Mobile Number"
                 className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e, "mobileNo")}
+                onChange={(e) => handlerSearchValue(e.target.value, "mobileNo")}
               />
             </div>
             <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
@@ -198,7 +207,7 @@ export default function ClientTable({ showAdvanceSearch = false }) {
                 value={searchForm?.address}
                 placeholder="User Address"
                 className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e, "address")}
+                onChange={(e) => handlerSearchValue(e.target.value, "address")}
               />
             </div>
             <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
@@ -222,7 +231,7 @@ export default function ClientTable({ showAdvanceSearch = false }) {
                 value={searchForm?.createdAt}
                 placeholder="User CreatedAt"
                 className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e, "createdAt")}
+                onChange={(e) => handlerSearchValue(e.target.value, "createdAt")}
               />
             </div>
           </div>

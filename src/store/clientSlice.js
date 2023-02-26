@@ -13,6 +13,7 @@ const initialState = {
     name: "",
     email: "",
     createdAt: "",
+    address: "",
     editedAt: "",
     mobileNo: "",
   },
@@ -34,10 +35,10 @@ export const clientsSlice = createSlice({
         image: "",
         name: "",
         email: "",
-        address: "",
-        mobileNo: "",
         createdAt: "",
         editedAt: "",
+        mobileNo: "",
+        address: "",
       };
 
       state.newForm = { ...reNewForm };
@@ -46,12 +47,18 @@ export const clientsSlice = createSlice({
 
     updateNewClientForm: (state, action) => {
       state.newForm = { ...action.payload };
-      localforage.setItem(CLIENT_FORM_KEY, { ...state.newForm });
+      localforage.setItem(CLIENT_FORM_KEY, {
+        ...state.newForm,
+        editedAt: new Date().toLocaleDateString(),
+      });
     },
 
     updateNewClientFormField: (state, action) => {
       state.newForm[action.payload.key] = action.payload.value;
-      localforage.setItem(CLIENT_FORM_KEY, { ...state.newForm });
+      localforage.setItem(CLIENT_FORM_KEY, {
+        ...state.newForm,
+        editedAt: new Date().toLocaleDateString(),
+      });
     },
 
     setAllClients: (state, action) => {

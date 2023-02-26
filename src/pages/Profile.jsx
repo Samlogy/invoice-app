@@ -26,7 +26,7 @@ const emptyForm = {
   website: ""
 };
 
-export default function Profile({ isShowDetail = false, alreadySet = false }) {
+export default function Profile() {
   const dispatch = useDispatch();
   const company = useSelector(getCompanyData);
   const { initLoading: isInitLoading } = useAppContext();
