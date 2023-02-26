@@ -66,11 +66,8 @@ export default function ClientTable({ showAdvanceSearch = false }) {
     }
 
     if (searchForm?.createdAt) {
-      const date = new Date(searchForm?.createdAt).toLocaleDateString()
-      console.log('date: ', date)
-      console.log('createdAt: ',filterData.createdAt)
       filterData = filterData.filter((client) =>
-        client?.createdAt === searchForm?.date
+        client?.createdAt === new Date(searchForm?.createdAt).toLocaleDateString()
       );
     }
 
