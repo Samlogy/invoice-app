@@ -41,9 +41,9 @@ export default function ProductTable({ showAdvanceSearch = false }) {
 
   const products = useMemo(() => {
     let filterData = allProducts.length > 0 ? [...allProducts].reverse() : [];
-    if (searchForm?.name?.trim()) {
+    if (searchForm?.name) {
       filterData = filterData.filter((product) =>
-        product?.name.includes(searchForm?.name)
+        product?.name.toLowerCase().includes(searchForm?.name.toLowerCase())
       );
     }
 
@@ -51,6 +51,20 @@ export default function ProductTable({ showAdvanceSearch = false }) {
       filterData = filterData.filter((product) =>
         product?.productID.includes(searchForm?.productID)
       );
+    }
+
+    if (searchForm?.amount) {
+      filterData = filterData.filter(
+        (product) => product?.amount.includes(searchForm?.amount)
+      );
+
+
+      if (searchForm?.createdAt) {
+        console.log('date: ', searchForm.createdAt)
+        filterData = filterData.filter(
+          (product) => product?.createdAt === new Date(searchForm?.createdAt).toLocaleDateString()
+        );
+      }
     }
 
     return filterData;
@@ -76,9 +90,7 @@ export default function ProductTable({ showAdvanceSearch = false }) {
     [dispatch]
   );
 
-  const handlerSearchValue = useCallback((event, keyName) => {
-    const value = event.target.value;
-
+  const handlerSearchValue = useCallback((value, keyName) => {
     setSearchForm((prev) => {
       return { ...prev, [keyName]: value };
     });
@@ -98,7 +110,7 @@ export default function ProductTable({ showAdvanceSearch = false }) {
       {showAdvanceSearch === true && (
         <div className="bg-white rounded-xl px-3 py-3 mb-3">
           <div className="font-title mb-2">Advanced Search</div>
-          <div className="flex w-full flex-col sm:flex-row">
+          <div className="flex w-full flex-wrap flex-col sm:flex-row">
             <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row  font-title flex-1 px-2">
               <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center text-gray-400">
                 <ProductIDIcon />
@@ -108,7 +120,7 @@ export default function ProductTable({ showAdvanceSearch = false }) {
                 value={searchForm?.productID}
                 placeholder="Product ID"
                 className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e, "productID")}
+                onChange={(e) => handlerSearchValue(e.target.value, "productID")}
               />
             </div>
             <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row  font-title flex-1 px-2">
@@ -121,7 +133,7 @@ export default function ProductTable({ showAdvanceSearch = false }) {
                 value={searchForm?.amount}
                 placeholder="Amount"
                 className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e, "amount")}
+                onChange={(e) => handlerSearchValue(e.target.value, "amount")}
               />
             </div>
             <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
@@ -133,7 +145,7 @@ export default function ProductTable({ showAdvanceSearch = false }) {
                 value={searchForm?.name}
                 placeholder="Product Name"
                 className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e, "name")}
+                onChange={(e) => handlerSearchValue(e.target.value, "name")}
               />
             </div>
             <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row  font-title flex-1 px-2">
@@ -146,7 +158,7 @@ export default function ProductTable({ showAdvanceSearch = false }) {
                 value={searchForm?.createdAt}
                 placeholder="CreatedAt Date"
                 className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e, "createdAt")}
+                onChange={(e) => handlerSearchValue(e.target.value, "createdAt")}
               />
             </div>
           </div>

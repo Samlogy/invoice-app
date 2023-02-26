@@ -82,7 +82,7 @@ function AddProduct() {
       autoClose: 2000,
     });
 
-    dispatch(addNewProduct({ ...productForm, id: nanoid(), createdAt: new Date().toISOString(), editedAt: "" }));
+    dispatch(addNewProduct({ ...productForm, id: nanoid(), createdAt: new Date().toLocaleDateString(), editedAt: "" }));
     setIsTouched(false);
   }, [productForm, dispatch, validForm]);
 

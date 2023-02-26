@@ -13,7 +13,8 @@ const initialState = {
     image: "",
     name: "",
     amount: 0,
-    createdAt: new Date().toISOString(),
+    createdAt: "",
+    editedAt: "",
   },
   editedID: null,
   deletedID: null,
@@ -34,7 +35,8 @@ export const productSlice = createSlice({
         productID: "",
         name: "",
         amount: 0,
-        createdAt: new Date().toISOString(),
+        createdAt: new Date().toLocaleDateString(),
+        editedAt: "",
       };
 
       state.newForm = { ...reNewForm };
@@ -43,12 +45,18 @@ export const productSlice = createSlice({
 
     updateNewProductForm: (state, action) => {
       state.newForm = { ...action.payload };
-      localforage.setItem(PRODUCT_FORM_KEY, { ...state.newForm });
+      localforage.setItem(PRODUCT_FORM_KEY, {
+        ...state.newForm,
+        editedAt: new Date().toLocaleDateString(),
+      });
     },
 
     updateNewProductFormField: (state, action) => {
       state.newForm[action.payload.key] = action.payload.value;
-      localforage.setItem(PRODUCT_FORM_KEY, { ...state.newForm });
+      localforage.setItem(PRODUCT_FORM_KEY, {
+        ...state.newForm,
+        editedAt: new Date().toLocaleDateString(),
+      });
     },
 
     setAllProducts: (state, action) => {
