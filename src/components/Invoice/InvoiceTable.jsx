@@ -24,7 +24,7 @@ const emptySearchForm = {
   clientName: "",
   createdAt: "",
   amount: "",
-  status: "",
+  statusName: "",
 };
 
 export default function InvoiceTable({ showAdvanceSearch = false }) {
@@ -46,9 +46,27 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
       );
     }
 
-    if (searchForm?.clientName?.trim()) {
+    if (searchForm?.clientName) {
       filterData = filterData.filter((invoice) =>
-        invoice.clientName.includes(searchForm?.clientName)
+        invoice.clientName.toLowerCase().includes(searchForm?.clientName.toLowerCase())
+      );
+    }
+
+    if (searchForm?.amount?.trim()) {
+      filterData = filterData.filter((invoice) =>
+        invoice?.amount.includes(searchForm?.amount)
+      );
+    }
+
+    if (searchForm?.createdAt) {
+      filterData = filterData.filter((invoice) =>
+        invoice?.createdAt === new Date(searchForm?.createdAt).toLocaleDateString()
+      );
+    }
+
+    if (searchForm?.statusName) {
+      filterData = filterData.filter((invoice) =>
+        invoice?.statusName.toLowerCase().includes(searchForm?.statusName.toLowerCase())
       );
     }
 
@@ -71,9 +89,7 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
     [navigate]
   );
 
-  const handlerSearchValue = useCallback((event, keyName) => {
-    const value = event.target.value;
-
+  const handlerSearchValue = useCallback((value, keyName) => {
     setSearchForm((prev) => {
       return { ...prev, [keyName]: value };
     });
@@ -93,8 +109,8 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
       {showAdvanceSearch === true && (
         <div className="bg-white rounded-xl px-3 py-3 mb-3">
           <div className="font-title mb-2">Advanced Search</div>
-          <div className="flex w-full flex-col sm:flex-row">
-            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
+          <div className="flex w-full flex-col lg:flex-row">
+            <div className="mb-2 lg:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
               <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
                 <InvoiceIcon className="h-6 w-6 text-gray-400" />
               </div>
@@ -103,10 +119,10 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
                 value={searchForm?.invoiceNo}
                 placeholder="Invoice No"
                 className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e, "invoiceNo")}
+                onChange={(e) => handlerSearchValue(e.target.value, "invoiceNo")}
               />
             </div>
-            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
+            <div className="mb-2 lg:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
               <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -126,10 +142,10 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
                 value={searchForm?.clientName}
                 placeholder="User Name"
                 className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e, "clientName")}
+                onChange={(e) => handlerSearchValue(e.target.value, "clientName")}
               />
             </div>
-            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
+            <div className="mb-2 lg:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
               <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
                 <InvoiceIcon className="h-6 w-6 text-gray-400" />
               </div>
@@ -139,10 +155,10 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
                 value={searchForm?.amount}
                 placeholder="Invoice Amount"
                 className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e, "amount")}
+                onChange={(e) => handlerSearchValue(e.target.value, "amount")}
               />
             </div>
-            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
+            <div className="mb-2 lg:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
               <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
                 <InvoiceIcon className="h-6 w-6 text-gray-400" />
               </div>
@@ -152,17 +168,18 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
                 value={searchForm?.createdAt}
                 placeholder="Invoice CreatedAt"
                 className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e, "createdAt")}
+                onChange={(e) => handlerSearchValue(e.target.value, "createdAt")}
               />
             </div>
-            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
+            <div className="mb-2 lg:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
               <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
                 <InvoiceIcon className="h-6 w-6 text-gray-400" />
               </div>
               <select
                 placeholder="Invoice status"
-                className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e, "status")}
+                className={`${defaultSearchStyle} bg-white`}
+                onChange={(e) => handlerSearchValue(e.target.value, "statusName")}
+                value={searchForm?.statusName}
               >
                 <option> Status </option>
                 <option value="draft">Draft</option>
@@ -177,7 +194,7 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
       <div className="sm:bg-white rounded-xl sm:px-3 sm:py-3">
         <div className="hidden sm:flex invisible sm:visible w-full flex-col sm:flex-row">
           <div className="sm:text-left text-default-color font-title flex-1">
-            Invoice Name
+            Invoice #
           </div>
           <div className="sm:text-left text-default-color font-title flex-1">
             Client Name
@@ -201,8 +218,7 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
                   <div className={defaultTdContentTitleStyle}>Invoice Name</div>
                   <div className={defaultTdContent}>
                     <span
-                      className="whitespace-nowrap text-ellipsis overflow-hidden text-blue-500 cursor-pointer"
-                      onClick={() => handleEdit(invoice)}
+                      className="whitespace-nowrap text-ellipsis overflow-hidden"
                     >
                       {invoice.invoiceNo}
                     </span>

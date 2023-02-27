@@ -27,6 +27,8 @@ import {
   setSettingModalOpen,
   updateExisitingInvoiceForm,
   updateNewInvoiceForm,
+  setLang, 
+  getLang
 } from "../../store/invoiceSlice";
 import {
   getSelectedClient,
@@ -56,6 +58,69 @@ import {
   sumTotalTaxes,
 } from "../../utils/match";
 import PageTitle from "../../components/Common/PageTitle";
+
+const LANGUAGES = {
+  en: {
+    invoice: {
+      title: "Invoice",
+      documentNum: "Invoice #",
+      description: "Description",
+      price: "Price",
+      quantity: "Quantity",
+      total: "Total",
+      subtotal: "SubTotal",
+      billingTo: "Billing To",
+      createdAt: "created on",
+      dueDate: "due Date",
+      tax: "Tax",
+      extraFees: "Extra Fees"
+    },
+    estimate: {
+      title: "Estimate",
+      documentNum: "Estimate #",
+      description: "Description",
+      price: "Price",
+      quantity: "Quantity",
+      total: "Total",
+      subtotal: "SubTotal",
+      billingTo: "Billing To",
+      createdAt: "created on",
+      dueDate: "due Date",
+      tax: "Taxe",
+      extraFees: "Extra fees"
+    },
+  },
+  fr: {
+    invoice: {
+      title: "Facture",
+      documentNum: "Facture N°",
+      description: "Description",
+      price: "Prix",
+      quantity: "Quantité",
+      total: "Total",
+      subtotal: "Sous total",
+      billingTo: "Facturation à",
+      createdAt: "créé le",
+      dueDate: "Date échéante",
+      tax: "Taxe",
+      extraFees: "Dépense supp"
+    },
+    estimate: {
+      title: "Estimation",
+      documentNum: "Estimation N°",
+      description: "Description",
+      price: "Prix",
+      quantity: "Quantité",
+      total: "Total",
+      subtotal: "Sous total",
+      billingTo: "Facturation à",
+      createdAt: "créé le",
+      dueDate: "Date échéante",
+      tax: "Taxe",
+      extraFees: "Dépense supp"
+    },
+  }
+}
 
 export default function InvoiceDetail(props) {
   const { initLoading, showNavbar, toggleNavbar, setEscapeOverflow } =
@@ -94,6 +159,11 @@ export default function InvoiceDetail(props) {
     statusName: "Draft",
     statusIndex: 1,
   });
+
+  // fix redux (get / set) --> lang - invoice/estimate
+  // edit 
+  const [t] = useState(LANGUAGES['fr']['invoice']);
+ 
 
   const handleExport = useCallback(() => {
     if (showNavbar) {
@@ -390,7 +460,7 @@ export default function InvoiceDetail(props) {
       const amount = (10 / 100) * subTotalAmount;
       const percentageTax = {
         id: nanoid(),
-        title: "Tax %",
+        title: t?.tax,
         type: "percentage",
         value: 10,
         amount,
@@ -407,14 +477,14 @@ export default function InvoiceDetail(props) {
         totalAmount: totalAmount,
       };
     });
-  }, [invoiceForm]);
+  }, [invoiceForm, t?.tax]);
 
   const addEmptyTax = useCallback(() => {
     setInvoiceForm((prev) => {
       const subTotalAmount = sumProductTotal(prev.products);
       const emptyTax = {
         id: nanoid(),
-        title: "Extra Fees",
+        title: t?.extraFees,
         type: "flat",
         value: 1,
         amount: 1,
@@ -426,7 +496,7 @@ export default function InvoiceDetail(props) {
       );
       return { ...prev, taxes: updateTaxes, totalAmount };
     });
-  }, []);
+  }, [t?.extraFees]);
 
   const onDeleteTax = useCallback((taxID) => {
     setInvoiceForm((prev) => {
@@ -681,23 +751,23 @@ export default function InvoiceDetail(props) {
                 }
               >
                 <p className="font-bold mb-2">
-                  {invoiceForm?.companyDetail?.companyName || "Company Name"}
+                  {invoiceForm?.companyDetail?.name || "Company Name"}
                 </p>
                 <p className="text-sm font-medium">
-                  {invoiceForm?.companyDetail?.billingAddress ||
+                  {invoiceForm?.companyDetail?.address ||
                     "Plz add First Company Data"}
                 </p>
                 <p className="text-sm font-medium">
-                  {invoiceForm?.companyDetail?.companyMobile || "Company Ph"}
+                  {invoiceForm?.companyDetail?.mobile || "Company Ph"}
                 </p>
                 <p className="text-sm font-medium">
-                  {invoiceForm?.companyDetail?.companyEmail ||
+                  {invoiceForm?.companyDetail?.email ||
                     "Company@email.com"}
                 </p>
               </div>
             </div>
             <div className="text-white font-title font-bold text-5xl mt-5 sm:mt-0">
-              Invoice
+               {t?.title}
             </div>
           </div>
           {/* Background Image Finished */}
@@ -711,7 +781,7 @@ export default function InvoiceDetail(props) {
           >
             <div className="flex-1">
               <div className="flex flex-row">
-                <div className="font-title font-bold">Billing To</div>
+                <div className="font-title font-bold"> {t?.billingTo}</div>
                 <div className="w-1/2 relative ml-3" style={{ top: "-3px" }}>
                   {!isViewMode && (
                     <Button size="sm" outlined={1} onClick={openChooseClient}>
@@ -748,13 +818,13 @@ export default function InvoiceDetail(props) {
                       autoComplete="nope"
                       placeholder="Client Address"
                       className={defaultInputSmStyle}
-                      value={invoiceForm?.clientDetail?.billingAddress}
+                      value={invoiceForm?.clientDetail?.address}
                       onChange={(e) =>
-                        handlerInvoiceClientValue(e, "billingAddress")
+                        handlerInvoiceClientValue(e, "address")
                       }
                     />
                   ) : (
-                    invoiceForm?.clientDetail?.billingAddress
+                    invoiceForm?.clientDetail?.address
                   )}
                 </div>
                 <div
@@ -795,7 +865,7 @@ export default function InvoiceDetail(props) {
             </div>
             <div className="flex-1">
               <div className="flex flex-row justify-between items-center mb-1">
-                <div className="font-title flex-1"> INVOICE # </div>
+                <div className="font-title flex-1"> {t?.documentNum} </div>
                 <div className="font-title flex-1 text-right">
                   {!isViewMode ? (
                     <input
@@ -811,7 +881,7 @@ export default function InvoiceDetail(props) {
                 </div>
               </div>
               <div className="flex flex-row justify-between items-center mb-1">
-                <div className="font-title flex-1"> Creation Date </div>
+                <div className="font-title flex-1">  {t?.createdAt} </div>
                 <div className="font-title flex-1 text-right">
                   <DatePicker
                     selected={invoiceForm.createdDate}
@@ -828,7 +898,7 @@ export default function InvoiceDetail(props) {
                 </div>
               </div>
               <div className="flex flex-row justify-between items-center mb-1">
-                <div className="font-title flex-1"> Due Date </div>
+                <div className="font-title flex-1">  {t?.dueDate} </div>
                 <div className="font-title flex-1 text-right">
                   <DatePicker
                     selected={invoiceForm.dueDate}
@@ -880,7 +950,7 @@ export default function InvoiceDetail(props) {
                     : " w-full sm:w-1/4 text-right sm:pr-10")
                 }
               >
-                <span className="inline-block">Description</span>
+                <span className="inline-block"> {t?.description}</span>
               </div>
               <div
                 className={
@@ -890,7 +960,7 @@ export default function InvoiceDetail(props) {
                     : " w-full sm:w-1/4 text-right sm:pr-10")
                 }
               >
-                Price
+                {t?.price}
               </div>
               <div
                 className={
@@ -900,7 +970,7 @@ export default function InvoiceDetail(props) {
                     : " w-full sm:w-1/4 text-right sm:pr-10")
                 }
               >
-                Qty
+                 {t?.quantity}
               </div>
               <div
                 className={
@@ -910,7 +980,7 @@ export default function InvoiceDetail(props) {
                     : "  w-full sm:w-1/4 text-right sm:pr-10")
                 }
               >
-                Total
+                 {t?.total}
               </div>
             </div>
 
@@ -933,7 +1003,7 @@ export default function InvoiceDetail(props) {
                 >
                   {!isExporting && (
                     <span className="sm:hidden w-1/2 flex flex-row items-center">
-                      Description
+                       {t?.description}
                     </span>
                   )}
                   <span
@@ -967,7 +1037,7 @@ export default function InvoiceDetail(props) {
                 >
                   {!isExporting && (
                     <span className="sm:hidden w-1/2 flex flex-row items-center">
-                      Price
+                       {t?.price}
                     </span>
                   )}
                   <span
@@ -1012,7 +1082,7 @@ export default function InvoiceDetail(props) {
                 >
                   {!isExporting && (
                     <span className="sm:hidden w-1/2 flex flex-row items-center">
-                      Quantity
+                       {t?.quantity}
                     </span>
                   )}
                   <span
@@ -1057,7 +1127,7 @@ export default function InvoiceDetail(props) {
                 >
                   {!isExporting && (
                     <span className="sm:hidden w-1/2 flex flex-row items-center">
-                      Total
+                       {t?.total}
                     </span>
                   )}
 
@@ -1135,7 +1205,7 @@ export default function InvoiceDetail(props) {
                     : "font-title w-1/2 sm:w-1/4 text-right sm:pr-8 flex flex-row sm:block mb-1 sm:mb-0"
                 }
               >
-                Subtotal
+                 {t?.subtotal}
               </div>
               <div
                 className={
@@ -1172,7 +1242,7 @@ export default function InvoiceDetail(props) {
                 <div
                   className={
                     isExporting
-                      ? "font-title w-3/5 text-right pr-8 flex flex-row block"
+                      ? "font-title w-3/5 text-right pr-8 flex flex-row"
                       : "font-title w-full sm:w-3/5 text-right sm:pr-8 flex flex-row sm:block"
                   }
                 >
@@ -1331,16 +1401,16 @@ export default function InvoiceDetail(props) {
                 <div
                   className={
                     isExporting
-                      ? "font-title text-base w-1/2 text-right pr-9 flex flex-row block  justify-end items-center"
+                      ? "font-title text-base w-1/2 text-right pr-9 flex flex-row justify-end items-center"
                       : "font-title text-lg w-1/2 text-right sm:pr-9 flex flex-row sm:block items-center"
                   }
                 >
-                  Total
+                  {t?.total}
                 </div>
                 <div
                   className={
                     isExporting
-                      ? "font-title text-lg w-1/2 text-right pr-9 flex flex-row block  justify-end items-center"
+                      ? "font-title text-lg w-1/2 text-right pr-9 flex flex-row justify-end items-center"
                       : "font-title text-lg w-1/2 text-right sm:pr-9 flex flex-row justify-end sm:block items-center"
                   }
                 >
