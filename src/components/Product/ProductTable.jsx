@@ -60,7 +60,6 @@ export default function ProductTable({ showAdvanceSearch = false }) {
     }
 
     if (searchForm?.createdAt) {
-        console.log('date: ', searchForm.createdAt)
         filterData = filterData.filter(
           (product) => product?.createdAt === new Date(searchForm?.createdAt).toLocaleDateString()
         );

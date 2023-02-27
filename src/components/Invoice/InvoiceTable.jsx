@@ -23,9 +23,10 @@ const emptySearchForm = {
   invoiceNo: "",
   clientName: "",
   createdAt: "",
+  dueDate: "",
   amount: "",
   statusName: "",
-  docType: ""
+  docType: "",
 };
 
 export default function InvoiceTable({ showAdvanceSearch = false }) {
@@ -49,31 +50,44 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
 
     if (searchForm?.clientName) {
       filterData = filterData.filter((invoice) =>
-        invoice?.clientName.toLowerCase().includes(searchForm?.clientName.toLowerCase())
+        invoice?.clientName
+          .toLowerCase()
+          .includes(searchForm?.clientName.toLowerCase())
       );
     }
 
     if (searchForm?.amount?.trim()) {
-      filterData = filterData.filter((invoice) =>
-        invoice?.amount.includes(searchForm?.amount)
+      filterData = filterData.filter(
+        (invoice) => invoice?.totalAmount === Number(searchForm?.amount)
       );
     }
 
     if (searchForm?.createdAt) {
-      filterData = filterData.filter((invoice) =>
-        invoice?.createdAt === new Date(searchForm?.createdAt).toLocaleDateString()
+      filterData = filterData.filter(
+        (invoice) =>
+        new Date(invoice?.createdDate).toLocaleDateString()  === new Date(searchForm?.createdAt).toLocaleDateString()
+      );
+    }
+
+    if (searchForm?.dueDate) {
+      filterData = filterData.filter(
+        (invoice) =>
+          new Date(invoice?.dueDate).toLocaleDateString() === new Date(searchForm?.dueDate).toLocaleDateString()
       );
     }
 
     if (searchForm?.statusName) {
-      filterData = filterData.filter((invoice) =>
-        invoice?.statusName.toLowerCase().includes(searchForm?.statusName.toLowerCase())
+      filterData = filterData.filter(
+        (invoice) =>
+          invoice?.statusName.toLowerCase() ===
+          searchForm?.statusName.toLowerCase()
       );
     }
 
     if (searchForm?.docType) {
-      filterData = filterData.filter((invoice) =>
-        invoice?.docType.toLowerCase() === searchForm?.docType.toLowerCase()
+      filterData = filterData.filter(
+        (invoice) =>
+          invoice?.docType.toLowerCase() === searchForm?.docType.toLowerCase()
       );
     }
 
@@ -96,9 +110,10 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
     [navigate]
   );
 
-  const handlerSearchValue = useCallback((value, keyName) => {
+  const handlerSearchValue = useCallback((e) => {
+    const { name, value } = e.target;
     setSearchForm((prev) => {
-      return { ...prev, [keyName]: value };
+      return { ...prev, [name]: value };
     });
 
     setItemOffset(0);
@@ -111,73 +126,90 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
     setPageCount(Math.ceil(invoices.length / itemsPerPage));
   }, [invoices, itemOffset]);
 
+  const columns = ["invoice #", "client name", "status", "amount", "type"];
+  const data = [
+    {
+      id: "BenuPtgcfyXN39f2fLF7T",
+      invoiceNo: "",
+      statusIndex: "1",
+      statusName: "Draft",
+      totalAmount: 1200,
+      dueDate: "2023-02-27T10:44:52.409Z",
+      createdDate: "2023-02-27T10:45:19.612Z",
+      docType: "estimate",
+      clientName: "est",
+    },
+  ];
+  const title = "Invoice";
+  const advancedSearch = [
+    {
+      icon: <InvoiceIcon className="h-6 w-6 text-gray-400" />,
+      type: "text",
+      placeholder: "Invoice No",
+      onChange: handlerSearchValue,
+      value: searchForm?.invoiceNo,
+      name: "invoiceNo",
+    },
+    {
+      icon: <InvoiceIcon className="h-6 w-6 text-gray-400" />,
+      type: "text",
+      placeholder: "Client Name",
+      onChange: handlerSearchValue,
+      value: searchForm?.clientName,
+      name: "clientName",
+    },
+    {
+      icon: <InvoiceIcon className="h-6 w-6 text-gray-400" />,
+      type: "text",
+      placeholder: "Amount",
+      onChange: handlerSearchValue,
+      value: searchForm?.amount,
+      name: "amount",
+    },
+    {
+      icon: <InvoiceIcon className="h-6 w-6 text-gray-400" />,
+      type: "date",
+      placeholder: "Created At",
+      onChange: handlerSearchValue,
+      value: searchForm?.createdAt,
+      name: "createdAt",
+    },
+    {
+      icon: <InvoiceIcon className="h-6 w-6 text-gray-400" />,
+      type: "date",
+      placeholder: "Due date",
+      onChange: handlerSearchValue,
+      value: searchForm?.dueDate,
+      name: "dueDate",
+    },
+  ];
+
   return (
     <>
       {showAdvanceSearch === true && (
         <div className="bg-white rounded-xl px-3 py-3 mb-3">
           <div className="font-title mb-2">Advanced Search</div>
           <div className="flex w-full flex-col lg:flex-row">
-            <div className="mb-2 lg:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
-              <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
-                <InvoiceIcon className="h-6 w-6 text-gray-400" />
+            {advancedSearch.map((item, idx) => (
+              <div
+                key={idx}
+                className="mb-2 lg:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2"
+              >
+                <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
+                  {item?.icon}
+                </div>
+                <input
+                  autoComplete="nope"
+                  type={item?.type}
+                  value={item?.value}
+                  placeholder={item?.placeholder}
+                  className={defaultSearchStyle}
+                  onChange={item?.onChange}
+                  name={item?.name}
+                />
               </div>
-              <input
-                autoComplete="nope"
-                value={searchForm?.invoiceNo}
-                placeholder="Invoice No"
-                className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e.target.value, "invoiceNo")}
-              />
-            </div>
-            <div className="mb-2 lg:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
-              <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-gray-400"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <input
-                autoComplete="nope"
-                value={searchForm?.clientName}
-                placeholder="User Name"
-                className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e.target.value, "clientName")}
-              />
-            </div>
-            <div className="mb-2 lg:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
-              <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
-                <InvoiceIcon className="h-6 w-6 text-gray-400" />
-              </div>
-              <input
-                type="tel"
-                autoComplete="nope"
-                value={searchForm?.amount}
-                placeholder="Invoice Amount"
-                className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e.target.value, "amount")}
-              />
-            </div>
-            <div className="mb-2 lg:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
-              <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
-                <InvoiceIcon className="h-6 w-6 text-gray-400" />
-              </div>
-              <input
-                type="date"
-                autoComplete="nope"
-                value={searchForm?.createdAt}
-                placeholder="Invoice CreatedAt"
-                className={defaultSearchStyle}
-                onChange={(e) => handlerSearchValue(e.target.value, "createdAt")}
-              />
-            </div>
+            ))}
+
             <div className="mb-2 lg:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
               <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
                 <InvoiceIcon className="h-6 w-6 text-gray-400" />
@@ -185,8 +217,9 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
               <select
                 placeholder="Invoice status"
                 className={`${defaultSearchStyle} bg-white`}
-                onChange={(e) => handlerSearchValue(e.target.value, "statusName")}
+                onChange={handlerSearchValue}
                 value={searchForm?.statusName}
+                name="statusName"
               >
                 <option> Status </option>
                 <option value="draft">Draft</option>
@@ -201,8 +234,9 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
               <select
                 placeholder="Invoice status"
                 className={`${defaultSearchStyle} bg-white`}
-                onChange={(e) => handlerSearchValue(e.target.value, "docType")}
+                onChange={handlerSearchValue}
                 value={searchForm?.docType}
+                name="docType"
               >
                 <option> Type </option>
                 <option value="invoice">Invoice</option>
@@ -215,22 +249,12 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
 
       <div className="sm:bg-white rounded-xl sm:px-3 sm:py-3">
         <div className="hidden sm:flex invisible sm:visible w-full flex-col sm:flex-row">
-          <div className="sm:text-left text-default-color font-title flex-1">
-            Invoice #
-          </div>
-          <div className="sm:text-left text-default-color font-title flex-1">
-            Client Name
-          </div>
-          <div className="sm:text-left text-default-color font-title flex-1">
-            Status
-          </div>
-          <div className="sm:text-left text-default-color font-title flex-1">
-            Amount
-          </div>
-          <div className="sm:text-left text-default-color font-title flex-1">
-            Type
-          </div>
-          <div className="sm:text-left text-default-color font-title sm:w-11">
+          {columns.map((item) => (
+            <div className="sm:text-left text-default-color font-title flex-1 uppercase">
+              {item}
+            </div>
+          ))}
+          <div className="sm:text-left text-default-color font-title sm:w-11 uppercase">
             Action
           </div>
         </div>
@@ -242,9 +266,7 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
                 <div className={defaultTdStyle}>
                   <div className={defaultTdContentTitleStyle}>Invoice Name</div>
                   <div className={defaultTdContent}>
-                    <span
-                      className="whitespace-nowrap text-ellipsis overflow-hidden"
-                    >
+                    <span className="whitespace-nowrap text-ellipsis overflow-hidden">
                       {invoice?.invoiceNo}
                     </span>
                   </div>
@@ -341,9 +363,7 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
               </div>
             ))}
 
-          {invoices.length <= 0 && !initLoading && (
-            <EmptyBar title={"Invoice"} />
-          )}
+          {invoices.length <= 0 && !initLoading && <EmptyBar title={title} />}
 
           {invoices.length > 0 && (
             <ReactPaginate

@@ -22,16 +22,6 @@ export default function DashboardWidgets() {
   const incomes = 0;
 
   const OPTIONS = [
-    // {
-    //   label: "Incomes",
-    //   icon: <LottieMoney loop className="h-20" />,
-    //   data: incomes,
-    // },
-    // {
-    //   label: "Expenses",
-    //   icon: <LottieMoney loop className="h-20" />,
-    //   data: expenses,
-    // },
     {
       label: "Invoices",
       icon: <LottieMoney loop className="h-20" />,
