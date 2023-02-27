@@ -57,15 +57,14 @@ export default function ProductTable({ showAdvanceSearch = false }) {
       filterData = filterData.filter(
         (product) => product?.amount.includes(searchForm?.amount)
       );
+    }
 
-
-      if (searchForm?.createdAt) {
+    if (searchForm?.createdAt) {
         console.log('date: ', searchForm.createdAt)
         filterData = filterData.filter(
           (product) => product?.createdAt === new Date(searchForm?.createdAt).toLocaleDateString()
         );
       }
-    }
 
     return filterData;
   }, [allProducts, searchForm]);
