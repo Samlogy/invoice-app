@@ -22,11 +22,19 @@
   - edit theme
   - add (taxe / extra fee / client / products)
   - print
+- estimate
+  - add
+  - details
+  - edit
+  - delete
+  - preview
+  - download as image / pdf
+  - edit theme
+  - add (taxe / extra fee / client / products)
+  - print
 - import data
 - export data
 - clear data
-
-## Tech Stack
 
 ### Tech Stack
 
@@ -34,4 +42,5 @@
 2. tailwindcss
 4. redux toolkit --> store
 5. eslint + prettier setup --> configure it according to guidelines
+6. indexedDB --> as a local database
 
