@@ -20,12 +20,6 @@ export default function Dashboard() {
   const goToNewClients = useCallback(() => {
     navigate("/clients/new");
   }, [navigate]);
-  // const goToNewIncome = useCallback(() => {
-  //   navigate("/incomes/new");
-  // }, [navigate]);
-  // const goToNewExpense = useCallback(() => {
-  //   navigate("/expenses/new");
-  // }, [navigate]);
 
   const TABLES = [
     {

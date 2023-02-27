@@ -250,7 +250,7 @@ export default function Profile() {
               ) : (
                 <input
                   value={companyForm?.website}
-                  placeholder="Company Phone"
+                  placeholder="Company Website"
                   className={
                     !validForm.website && isTouched
                       ? defaultInputInvalidStyle

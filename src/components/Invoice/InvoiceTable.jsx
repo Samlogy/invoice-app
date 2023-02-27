@@ -65,14 +65,16 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
     if (searchForm?.createdAt) {
       filterData = filterData.filter(
         (invoice) =>
-        new Date(invoice?.createdDate).toLocaleDateString()  === new Date(searchForm?.createdAt).toLocaleDateString()
+          new Date(invoice?.createdDate).toLocaleDateString() ===
+          new Date(searchForm?.createdAt).toLocaleDateString()
       );
     }
 
     if (searchForm?.dueDate) {
       filterData = filterData.filter(
         (invoice) =>
-          new Date(invoice?.dueDate).toLocaleDateString() === new Date(searchForm?.dueDate).toLocaleDateString()
+          new Date(invoice?.dueDate).toLocaleDateString() ===
+          new Date(searchForm?.dueDate).toLocaleDateString()
       );
     }
 
@@ -189,11 +191,11 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
       {showAdvanceSearch === true && (
         <div className="bg-white rounded-xl px-3 py-3 mb-3">
           <div className="font-title mb-2">Advanced Search</div>
-          <div className="flex w-full flex-col lg:flex-row">
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:grid-cols-4">
             {advancedSearch.map((item, idx) => (
               <div
                 key={idx}
-                className="mb-2 lg:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2"
+                className="mb-2 lg:mb-0 sm:text-left text-default-color flex flex-row flex-wrap flex-1 gap-3 font-title px-2"
               >
                 <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
                   {item?.icon}
@@ -206,48 +208,47 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
                   className={defaultSearchStyle}
                   onChange={item?.onChange}
                   name={item?.name}
-                />
+                />                
               </div>
             ))}
-
-            <div className="mb-2 lg:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
-              <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
-                <InvoiceIcon className="h-6 w-6 text-gray-400" />
-              </div>
-              <select
-                placeholder="Invoice status"
-                className={`${defaultSearchStyle} bg-white`}
-                onChange={handlerSearchValue}
-                value={searchForm?.statusName}
-                name="statusName"
-              >
-                <option> Status </option>
-                <option value="draft">Draft</option>
-                <option value="unpaid">Unpaid</option>
-                <option value="paid">Paid</option>
-              </select>
-            </div>
-            <div className="mb-2 lg:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
-              <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
-                <InvoiceIcon className="h-6 w-6 text-gray-400" />
-              </div>
-              <select
-                placeholder="Invoice status"
-                className={`${defaultSearchStyle} bg-white`}
-                onChange={handlerSearchValue}
-                value={searchForm?.docType}
-                name="docType"
-              >
-                <option> Type </option>
-                <option value="invoice">Invoice</option>
-                <option value="estimate">Estimate</option>
-              </select>
-            </div>
+            <div className="mb-2 lg:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2 min-w-[12rem] max-w-[13rem]">
+                  <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
+                    <InvoiceIcon className="h-6 w-6 text-gray-400" />
+                  </div>
+                  <select
+                    placeholder="Invoice status"
+                    className={`${defaultSearchStyle} bg-white`}
+                    onChange={handlerSearchValue}
+                    value={searchForm?.statusName}
+                    name="statusName"
+                  >
+                    <option> Status </option>
+                    <option value="draft">Draft</option>
+                    <option value="unpaid">Unpaid</option>
+                    <option value="paid">Paid</option>
+                  </select>
+                </div>
+                <div className="mb-2 lg:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2 min-w-[12rem] max-w-[13rem]">
+                  <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
+                    <InvoiceIcon className="h-6 w-6 text-gray-400" />
+                  </div>
+                  <select
+                    placeholder="Invoice status"
+                    className={`${defaultSearchStyle} bg-white`}
+                    onChange={handlerSearchValue}
+                    value={searchForm?.docType}
+                    name="docType"
+                  >
+                    <option> Type </option>
+                    <option value="invoice">Invoice</option>
+                    <option value="estimate">Estimate</option>
+                  </select>
+                </div>
           </div>
         </div>
       )}
 
-      <div className="sm:bg-white rounded-xl sm:px-3 sm:py-3">
+      <div className="sm:bg-white rounded-xl sm:px-3 sm:py-3 ">
         <div className="hidden sm:flex invisible sm:visible w-full flex-col sm:flex-row">
           {columns.map((item) => (
             <div className="sm:text-left text-default-color font-title flex-1 uppercase">

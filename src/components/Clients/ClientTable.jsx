@@ -110,8 +110,8 @@ export default function ClientTable({ showAdvanceSearch = false }) {
       {showAdvanceSearch === true && (
         <div className="bg-white rounded-xl px-3 py-3 mb-3">
           <div className="font-title mb-2">Advanced Search</div>
-          <div className="flex w-full flex-wrap flex-col sm:flex-row">
-            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:grid-cols-4">
+            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2 min-w-[12rem] max-w-[13rem]">
               <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -134,7 +134,7 @@ export default function ClientTable({ showAdvanceSearch = false }) {
                 onChange={(e) => handlerSearchValue(e.target.value, "name")}
               />
             </div>
-            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row  font-title flex-1 px-2">
+            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row  font-title flex-1 px-2 min-w-[12rem] max-w-[13rem]">
               <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -159,7 +159,7 @@ export default function ClientTable({ showAdvanceSearch = false }) {
                 onChange={(e) => handlerSearchValue(e.target.value, "email")}
               />
             </div>
-            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row  font-title flex-1 px-2">
+            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row  font-title flex-1 px-2 min-w-[12rem] max-w-[13rem]">
               <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -184,7 +184,7 @@ export default function ClientTable({ showAdvanceSearch = false }) {
                 onChange={(e) => handlerSearchValue(e.target.value, "mobileNo")}
               />
             </div>
-            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
+            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2 min-w-[12rem] max-w-[13rem]">
               <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -207,7 +207,7 @@ export default function ClientTable({ showAdvanceSearch = false }) {
                 onChange={(e) => handlerSearchValue(e.target.value, "address")}
               />
             </div>
-            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
+            <div className="mb-2 sm:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2 min-w-[12rem] max-w-[13rem]">
               <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
