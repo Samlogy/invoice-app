@@ -22,6 +22,7 @@ const initialState = {
   detailList: [],
   deletedID: null,
   currentEditedID: null,
+  lang: "en",
   newForm: {
     id: nanoid(),
     invoiceNo: "",
@@ -34,20 +35,23 @@ const initialState = {
     createdDate: new Date(),
     currencyUnit: "$",
     clientDetail: {
-      id: "",
-      name: "",
-      mobileNo: "",
-      email: "",
+      id: nanoid(),
       image: "",
-      billingAddress: "",
+      name: "",
+      email: "",
+      createdAt: "",
+      editedAt: "",
+      mobileNo: "",
     },
     products: [
       {
-        amount: 1200,
-        id: "D9vPlvwg11cxYJToEf3x4",
-        name: "productName",
+        id: nanoid(),
+        image: "",
         productID: "",
+        name: "",
+        amount: 1200,
         quantity: 1,
+        createdAt: new Date().toISOString(),
       },
     ],
     taxes: [],
@@ -214,6 +218,10 @@ export const invoiceSlice = createSlice({
     setIsConfirm: (state, action) => {
       state.isConfirm = action.payload;
     },
+
+    setLang: (state, action) => {
+      state.lang = action.payload;
+    },
   },
 });
 
@@ -233,6 +241,7 @@ export const {
   updateNewInvoiceForm,
   updateNewInvoiceFormField,
   updateExisitingInvoiceForm,
+  setLang,
 } = invoiceSlice.actions;
 
 export const getAllInvoiceSelector = (state) => state.invoices.data;
@@ -260,6 +269,8 @@ export const getIsInvoiceConfirmModal = (state) =>
   state.invoices.isConfirmModal;
 
 export const getIsConfirm = (state) => state.invoices.isConfirm;
+
+export const getLang = (state) => state.invoices.lang;
 
 export const getTotalBalance = (state) =>
   state.invoices.data.reduce((prev, next) => {

@@ -19,7 +19,6 @@ function InvoiceTopBar({
 }) {
   const dispatch = useDispatch();
   const lang = useSelector(getLang);
-  console.log("lang: ", getLang);
   return (
     <div className="bg-white rounded-xl px-3 py-3">
       <div className=" my-1 sm:my-1 md:my-0 px-1 flex flex-row justify-around md:justify-[none]">
