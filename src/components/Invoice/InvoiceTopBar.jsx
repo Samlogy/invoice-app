@@ -7,7 +7,12 @@ import EyeOpenIcon from "../Icons/EyeOpenIcon";
 import PencilIcon from "../Icons/PencilIcon";
 import SettingIcon from "../Icons/SettingIcon";
 
-import { getLang, setLang, setDocType, getDocType } from "../../store/invoiceSlice";
+import {
+  getLang,
+  setLang,
+  setDocType,
+  getDocType,
+} from "../../store/invoiceSlice";
 
 function InvoiceTopBar({
   viewMode = false,
@@ -19,12 +24,11 @@ function InvoiceTopBar({
 }) {
   const dispatch = useDispatch();
   const lang = useSelector(getLang);
-   const docType = useSelector(getDocType);
-   console.log('doc: ', docType)
+  const docType = useSelector(getDocType);
   return (
     <div className="bg-white rounded-xl px-3 py-3">
-      <div className=" my-1 sm:my-1 md:my-0 px-1 flex flex-row justify-around md:justify-[none]">
-        <div className="w-30 mr-4">
+      <div className=" my-1 sm:my-1 md:my-0 px-1 flex flex-row justify-around lg:justify-between md:justify-[none]">
+        <div className="w-[2rem] mr-4">
           <Button size="sm" block={1} onClick={onClickBack}>
             <>
               <svg
@@ -44,7 +48,7 @@ function InvoiceTopBar({
             </>
           </Button>
         </div>
-        <div className="flex flex-col sm:flex-row justify-start gap-2">
+        <div className="flex flex-col sm:flex-row justify-start w-full gap-2">
           <div className="flex-1">
             <Button size="sm" block={1} outlined={1} onClick={onClickViewAs}>
               {!viewMode ? (
@@ -72,7 +76,9 @@ function InvoiceTopBar({
           </div>
           <div className="w-20 my-1 sm:my-1 md:my-0 px-1">
             <select
-              onChange={(e) => dispatch(setDocType(e.target.value.toLowerCase()))}
+              onChange={(e) =>
+                dispatch(setDocType(e.target.value.toLowerCase()))
+              }
               value={docType}
               className="rounded-xl p-1 bg-white border-[1px] border-blue-500 text-blue-700 text-sm"
             >

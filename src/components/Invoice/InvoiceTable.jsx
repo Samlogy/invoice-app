@@ -25,6 +25,7 @@ const emptySearchForm = {
   createdAt: "",
   amount: "",
   statusName: "",
+  docType: ""
 };
 
 export default function InvoiceTable({ showAdvanceSearch = false }) {
@@ -42,13 +43,13 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
     let filterData = allInvoices.length > 0 ? [...allInvoices].reverse() : [];
     if (searchForm?.invoiceNo?.trim()) {
       filterData = filterData.filter((invoice) =>
-        invoice.invoiceNo.includes(searchForm?.invoiceNo)
+        invoice?.invoiceNo.includes(searchForm?.invoiceNo)
       );
     }
 
     if (searchForm?.clientName) {
       filterData = filterData.filter((invoice) =>
-        invoice.clientName.toLowerCase().includes(searchForm?.clientName.toLowerCase())
+        invoice?.clientName.toLowerCase().includes(searchForm?.clientName.toLowerCase())
       );
     }
 
@@ -67,6 +68,12 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
     if (searchForm?.statusName) {
       filterData = filterData.filter((invoice) =>
         invoice?.statusName.toLowerCase().includes(searchForm?.statusName.toLowerCase())
+      );
+    }
+
+    if (searchForm?.docType) {
+      filterData = filterData.filter((invoice) =>
+        invoice?.docType.toLowerCase() === searchForm?.docType.toLowerCase()
       );
     }
 
@@ -187,6 +194,21 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
                 <option value="paid">Paid</option>
               </select>
             </div>
+            <div className="mb-2 lg:mb-0 sm:text-left text-default-color flex flex-row font-title flex-1 px-2">
+              <div className="h-12 w-12 rounded-2xl bg-gray-100 mr-2 flex justify-center items-center">
+                <InvoiceIcon className="h-6 w-6 text-gray-400" />
+              </div>
+              <select
+                placeholder="Invoice status"
+                className={`${defaultSearchStyle} bg-white`}
+                onChange={(e) => handlerSearchValue(e.target.value, "docType")}
+                value={searchForm?.docType}
+              >
+                <option> Type </option>
+                <option value="invoice">Invoice</option>
+                <option value="estimate">Estimate</option>
+              </select>
+            </div>
           </div>
         </div>
       )}
@@ -205,6 +227,9 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
           <div className="sm:text-left text-default-color font-title flex-1">
             Amount
           </div>
+          <div className="sm:text-left text-default-color font-title flex-1">
+            Type
+          </div>
           <div className="sm:text-left text-default-color font-title sm:w-11">
             Action
           </div>
@@ -213,14 +238,14 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
         <div>
           {currentItems &&
             currentItems.map((invoice) => (
-              <div className={defaultTdWrapperStyle} key={invoice.id}>
+              <div className={defaultTdWrapperStyle} key={invoice?.id}>
                 <div className={defaultTdStyle}>
                   <div className={defaultTdContentTitleStyle}>Invoice Name</div>
                   <div className={defaultTdContent}>
                     <span
                       className="whitespace-nowrap text-ellipsis overflow-hidden"
                     >
-                      {invoice.invoiceNo}
+                      {invoice?.invoiceNo}
                     </span>
                   </div>
                 </div>
@@ -229,7 +254,7 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
                   <div className={defaultTdContentTitleStyle}>Client Name</div>
                   <div className={defaultTdContent}>
                     <span className="whitespace-nowrap text-ellipsis overflow-hidden">
-                      {invoice.clientName}
+                      {invoice?.clientName}
                     </span>
                   </div>
                 </div>
@@ -240,14 +265,14 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
                     <span
                       className={
                         "whitespace-nowrap text-ellipsis overflow-hidden px-3 rounded-xl  py-1 " +
-                        (invoice.statusIndex === "2"
+                        (invoice?.statusIndex === "2"
                           ? "bg-red-100 text-red-400"
-                          : invoice.statusIndex === "3"
+                          : invoice?.statusIndex === "3"
                           ? "bg-green-200 text-green-600"
                           : "bg-gray-100 text-gray-600 ")
                       }
                     >
-                      {invoice.statusName}
+                      {invoice?.statusName}
                     </span>
                   </div>
                 </div>
@@ -257,7 +282,7 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
                   <div className={defaultTdContent + " "}>
                     <span className="whitespace-nowrap text-ellipsis overflow-hidden ">
                       <NumberFormat
-                        value={invoice.totalAmount}
+                        value={invoice?.totalAmount}
                         className=""
                         displayType={"text"}
                         thousandSeparator={true}
@@ -265,6 +290,15 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
                           <span {...props}>{value}</span>
                         )}
                       />
+                    </span>
+                  </div>
+                </div>
+
+                <div className={defaultTdStyle}>
+                  <div className={defaultTdContentTitleStyle}>Type</div>
+                  <div className={defaultTdContent + " "}>
+                    <span className="whitespace-nowrap text-ellipsis overflow-hidden uppercase">
+                      {invoice?.docType}
                     </span>
                   </div>
                 </div>

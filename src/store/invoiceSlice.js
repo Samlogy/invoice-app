@@ -23,12 +23,12 @@ const initialState = {
   deletedID: null,
   currentEditedID: null,
   lang: "en",
-  docType: "invoice",
   newForm: {
     id: nanoid(),
     invoiceNo: "",
     statusIndex: "1",
     statusName: "Draft",
+    docType: "invoice",
     totalAmount: 1200,
     color: colorData[0],
     backgroundImage: imageData[0],
@@ -84,6 +84,7 @@ export const invoiceSlice = createSlice({
         dueDate,
         createdDate,
         clientDetail,
+        docType,
       } = payload;
 
       const newInvoice = {
@@ -94,6 +95,7 @@ export const invoiceSlice = createSlice({
         totalAmount,
         dueDate,
         createdDate,
+        docType,
         clientName: clientDetail?.name,
       };
 
@@ -224,7 +226,7 @@ export const invoiceSlice = createSlice({
       state.lang = action.payload;
     },
     setDocType: (state, action) => {
-      state.docType = action.payload;
+      state.newForm.docType = action.payload;
     },
   },
 });
@@ -276,7 +278,7 @@ export const getIsInvoiceConfirmModal = (state) =>
 export const getIsConfirm = (state) => state.invoices.isConfirm;
 
 export const getLang = (state) => state.invoices.lang;
-export const getDocType = (state) => state.invoices.docType;
+export const getDocType = (state) => state.invoices.newForm.docType;
 
 export const getTotalBalance = (state) =>
   state.invoices.data.reduce((prev, next) => {

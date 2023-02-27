@@ -646,9 +646,10 @@ export default function InvoiceDetail(props) {
       const isNew = params.id === "new";
       if (isNew) {
         dispatch(setIsConfirm(false));
-        dispatch(setNewInvoices({ ...invoiceForm, ...statusData }));
-        setInvoiceForm({
+        dispatch(setNewInvoices({ ...invoiceForm, docType,  ...statusData }));
+        const newData = {
           ...invoiceForm,
+          docType,
           products: [
             {
               amount: 1200,
@@ -660,7 +661,8 @@ export default function InvoiceDetail(props) {
           ],
           taxes: [],
           totalAmount: 1200,
-        });
+        }
+        setInvoiceForm(newData);
 
         setTimeout(() => {
           navigate("/invoices");
@@ -675,7 +677,7 @@ export default function InvoiceDetail(props) {
         });
       }
     }
-  }, [dispatch, invoiceForm, isConfirm, navigate, params, statusData]);
+  }, [dispatch, invoiceForm, docType, isConfirm, navigate, params, statusData]);
 
   useEffect(() => {
     setTranslation(LANGUAGES[lang || 'en'][docType || 'invoice'])
