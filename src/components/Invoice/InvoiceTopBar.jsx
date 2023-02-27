@@ -7,7 +7,7 @@ import EyeOpenIcon from "../Icons/EyeOpenIcon";
 import PencilIcon from "../Icons/PencilIcon";
 import SettingIcon from "../Icons/SettingIcon";
 
-import { getLang, setLang } from "../../store/invoiceSlice";
+import { getLang, setLang, setDocType, getDocType } from "../../store/invoiceSlice";
 
 function InvoiceTopBar({
   viewMode = false,
@@ -19,6 +19,8 @@ function InvoiceTopBar({
 }) {
   const dispatch = useDispatch();
   const lang = useSelector(getLang);
+   const docType = useSelector(getDocType);
+   console.log('doc: ', docType)
   return (
     <div className="bg-white rounded-xl px-3 py-3">
       <div className=" my-1 sm:my-1 md:my-0 px-1 flex flex-row justify-around md:justify-[none]">
@@ -66,6 +68,16 @@ function InvoiceTopBar({
             >
               <option value="en">EN</option>
               <option value="fr">FR</option>
+            </select>
+          </div>
+          <div className="w-20 my-1 sm:my-1 md:my-0 px-1">
+            <select
+              onChange={(e) => dispatch(setDocType(e.target.value.toLowerCase()))}
+              value={docType}
+              className="rounded-xl p-1 bg-white border-[1px] border-blue-500 text-blue-700 text-sm"
+            >
+              <option value="invoice">Invoice</option>
+              <option value="estimate">Estimate</option>
             </select>
           </div>
           <div className="w-full sm:w-1/2 md:w-1/4 my-1 sm:my-1 md:my-0 px-1">

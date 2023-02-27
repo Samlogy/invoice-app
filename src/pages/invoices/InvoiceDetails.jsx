@@ -26,7 +26,7 @@ import {
   setNewInvoices,
   setSettingModalOpen,
   updateExisitingInvoiceForm,
-  updateNewInvoiceForm, getLang
+  updateNewInvoiceForm, getLang, getDocType
 } from "../../store/invoiceSlice";
 import {
   getSelectedClient,
@@ -158,17 +158,10 @@ export default function InvoiceDetail(props) {
     statusIndex: 1,
   });
 
-  // fix redux (get / set) --> lang - invoice/estimate
-  // edit 
   const lang = useSelector(getLang)
-  const [t, setTranslation] = useState(LANGUAGES[lang || 'en']['invoice']);
+  const docType = useSelector(getDocType)
+  const [t, setTranslation] = useState(LANGUAGES[lang || 'en'][docType || 'invoice']);
 
-  useEffect(() => {
-    setTranslation(LANGUAGES[lang || 'en']['invoice'])
-  }, [lang])
-
-    console.log("lang: ", lang);
- 
 
   const handleExport = useCallback(() => {
     if (showNavbar) {
@@ -683,6 +676,10 @@ export default function InvoiceDetail(props) {
       }
     }
   }, [dispatch, invoiceForm, isConfirm, navigate, params, statusData]);
+
+  useEffect(() => {
+    setTranslation(LANGUAGES[lang || 'en'][docType || 'invoice'])
+  }, [lang, docType])
 
   return (
     <div>
