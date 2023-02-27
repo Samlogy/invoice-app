@@ -27,6 +27,30 @@ export default function Dashboard() {
   //   navigate("/expenses/new");
   // }, [navigate]);
 
+  const TABLES = [
+    {
+      icon: <InvoiceIcon />,
+      button: "New Invoice",
+      title: "Invoices",
+      link: goToNewInvoice,
+      table: <InvoiceTable />,
+    },
+    {
+      icon: <InvoiceIcon />,
+      button: "New Client",
+      title: "Clients",
+      link: goToNewClients,
+      table: <ClientTable />,
+    },
+    {
+      icon: <InvoiceIcon />,
+      button: "New Product",
+      title: "Products",
+      link: goToNewProduct,
+      table: <ProductTable />,
+    },
+  ];
+
   return (
     <div>
       <div className="p-4">
@@ -36,47 +60,18 @@ export default function Dashboard() {
         <div className="w-full pl-4 pr-4 sm:pl-4 sm:pr-0 mb-4 sm:mb-1">
           <DashboardWidgets />
 
-          <Button onClick={goToNewInvoice} addStyle="flex ml-auto w-[10rem] mb-4">
-            <InvoiceIcon />
-            <span className="inline-block ml-2"> New Invoice </span>
-          </Button>
-          <div className="mt-1">
-            <InvoiceTable />
-          </div>
-
-          <Button onClick={goToNewProduct} addStyle="flex ml-auto w-[10rem] mb-4">
-            <InvoiceIcon />
-            <span className="inline-block ml-2"> New Product </span>
-          </Button>
-          <div className="mt-4">
-            <ProductTable />
-          </div>
-
-          <Button onClick={goToNewClients} addStyle="flex ml-auto w-[10rem] mb-4">
-            <InvoiceIcon />
-            <span className="inline-block ml-2"> New Client </span>
-          </Button>
-          <div className="mt-4">
-            <ClientTable />
-          </div>
-
-          {/* <Button onClick={goToNewIncome} block={1}>
-            <InvoiceIcon />
-            <span className="inline-block ml-2"> New Income </span>
-          </Button>
-          <div className="mt-4">
-            <ClientTable />
-            income table
-          </div> */}
-
-          {/* <Button onClick={goToNewExpense} block={1}>
-            <InvoiceIcon />
-            <span className="inline-block ml-2"> New Expense </span>
-          </Button>
-          <div className="mt-4">
-            <ClientTable />
-            expense table
-          </div> */}
+          {TABLES.map((item) => (
+            <div key={item?.title} className="mt-4">
+              <div className="flex justify-between items-center mb-4">
+                <PageTitle title={item?.title} />
+                <Button onClick={item?.link} addStyle="flex w-[10rem]">
+                  {item?.icon}
+                  <span className="inline-block ml-2"> {item?.button} </span>
+                </Button>
+              </div>
+              <div className="mt-1">{item?.table}</div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
