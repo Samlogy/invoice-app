@@ -25,10 +25,12 @@ export default function InvoiceEstimateTemplate() {
         <div className="p-4">
           <PageTitle title="Invoices / Estimates" />
         </div>
-        <Button onClick={goToNew} addStyle="flex w-[10rem]">
+        <div className="p-4">
+          <Button onClick={goToNew} addStyle="flex w-[10rem]">
           <InvoiceIcon />
           <span className="inline-block ml-2"> Create </span>
         </Button>
+        </div>
       </div>
 
       <div className="flex flex-wrap">

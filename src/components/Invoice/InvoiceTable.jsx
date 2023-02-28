@@ -190,8 +190,8 @@ export default function InvoiceTable({ showAdvanceSearch = false }) {
     <>
       {showAdvanceSearch === true && (
         <div className="bg-white rounded-xl px-3 py-3 mb-3">
-          <div className="font-title mb-2">Advanced Search</div>
-          <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:grid-cols-4">
+          <div className="font-title mb-2 text-center sm:text-left">Advanced Search</div>
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:grid-cols-4 place-items-center sm:place-items-stretch">
             {advancedSearch.map((item, idx) => (
               <div
                 key={idx}

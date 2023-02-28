@@ -22,7 +22,7 @@ export default function TemplateProductClient({ title }) {
 
         <div className="p-4">
           <Button addStyle="flex ml-auto w-[10rem] mb-4 capitalize" onClick={goToNew}>
-            <InvoiceIcon />
+            {title === "products" ? <InvoiceIcon />: <InvoiceIcon />}
             Add {title}
           </Button>
         </div>
