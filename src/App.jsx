@@ -52,9 +52,9 @@ function Routing() {
     <Routers>
       <Container>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<Dashboard />} exact />
 
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile />} exact />
 
           <Route path="clients">
             <Route path="" element={<ClientList />} exact />

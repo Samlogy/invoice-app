@@ -1,17 +1,18 @@
-import React, { useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import localforage from "localforage";
-import { NavLink, useLocation } from "react-router-dom";
-import { useAppContext } from "../../context/AppContext";
-import { useSelector } from "react-redux";
-import HomeIcon from "../Icons/HomeIcon";
-import ProductIcon from "../Icons/ProductIcon";
-import InvoiceIcon from "../Icons/InvoiceIcon";
-import ClientPlusIcon from "../Icons/ClientPlusIcon";
-import InvoiceNavbarLoading from "../Loading/InvoiceNavbarLoading";
-import { getCompanyData } from "../../store/companySlice";
+import React, { useCallback, useRef } from "react";
 import Skeleton from "react-loading-skeleton";
+import { useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
+import { useAppContext } from "../../context/AppContext";
+import { getCompanyData } from "../../store/companySlice";
 import Button from "../Button/Button";
+import ClientPlusIcon from "../Icons/ClientPlusIcon";
+import HomeIcon from "../Icons/HomeIcon";
+import InvoiceIcon from "../Icons/InvoiceIcon";
+import ProductIcon from "../Icons/ProductIcon";
+import InvoiceNavbarLoading from "../Loading/InvoiceNavbarLoading";
+import {getAllLocalData, removeAllData} from "../../utils/storage"
 
 // import ALL_KEYS from "../../constants/localKeys";
 
@@ -40,17 +41,7 @@ const NAV_DATA = [
     title: "Profile",
     link: "profile",
     Icon: ClientPlusIcon,
-  },
-  // {
-  //   title: "Expenses",
-  //   link: "expenses",
-  //   Icon: InvoiceIcon,
-  // },
-  // {
-  //   title: "Incomes",
-  //   link: "incomes",
-  //   Icon: InvoiceIcon,
-  // },
+  }
 ];
 
 const navDefaultClasses =
@@ -72,7 +63,7 @@ export default function Sidebar() {
   }, [showNavbar, toggleNavbar]);
 
   const clearData = async () => {
-    await localforage.clear()
+    removeAllData()
   }
   const importData = (e) => {
     const file = e.target.files[0];
@@ -90,11 +81,11 @@ export default function Sidebar() {
   };
   const exportData = async () => {    
     const exportName = "business-app-db";
-    let appData = await loadData()
+    let appData = await getAllLocalData()
 
         const dataStr = JSON.stringify({...appData})
 
-        // console.log('str: ', dataStr)
+        console.log('str: ', dataStr)
         // const a =
         //   "data:text/json;charset=utf-8," +
         //   encodeURIComponent(dataStr);
@@ -110,25 +101,6 @@ export default function Sidebar() {
 
   const inputRef = useRef(null);
   const onClickImport = () => inputRef?.current?.click();
-
-  const loadData = async () => {
-    let appData = [];
-    try {
-      const appKeys = await localforage.keys();
-      console.log("appKeys: ", appKeys);
-
-      const data = await Promise.all(
-        appKeys.map(
-          async (key, idx) => appData[key] = await localforage.getItem(key)
-        )
-      );
-
-       console.log('appData: ', appData)
-      return appData
-    } catch (err) {
-      console.log("err: ", err);
-    }
-  }
 
   return (
     <>

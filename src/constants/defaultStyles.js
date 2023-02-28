@@ -1,5 +1,5 @@
 export const defaultStyle =
-  "font-title text-md px-2 block w-full border-solid border-2 rounded-xl p-x2 focus:outline-none ";
+  "font-title text-md px-2 block w-full border-solid border-2 rounded-xl p-x2 focus:outline-none";
 export const defaultInputStyle = defaultStyle + "border-indigo-400 h-12 flex-1";
 export const defaultSearchStyle =
   defaultStyle + "border-gray-100 h-12 flex-1 text-sm";
