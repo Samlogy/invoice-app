@@ -690,8 +690,8 @@ export default function InvoiceDetail(props) {
           title={
             <>
               {params.id === "new"
-                ? "New Invoice"
-                : `Invoice Detail ${invoiceForm?.statusName}`}
+                ?  `New ${docType}`
+                : `${docType} Details ${invoiceForm?.statusName}`}
             </>
           }
         />
