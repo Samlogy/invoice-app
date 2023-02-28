@@ -1,8 +1,5 @@
 import React from "react";
 import LottieMoney from "../LotiIcon/LottieMoney";
-// import LottieProduct from "../LotiIcon/LottieProduct";
-// import LottieInvoice from "../LotiIcon/LottieInvoice";
-// import LottiePersons from "../LotiIcon/LottiePersons";
 import { useSelector } from "react-redux";
 import { getAllClientsSelector } from "../../store/clientSlice";
 import { getAllProductSelector } from "../../store/productSlice";
@@ -12,14 +9,12 @@ import {
 } from "../../store/invoiceSlice";
 import NumberFormat from "react-number-format";
 
-export default function DashboardWidgets() {
+export default function Widgets() {
   const clients = useSelector(getAllClientsSelector);
   const products = useSelector(getAllProductSelector);
   const allInvoices = useSelector(getAllInvoiceSelector);
 
   const totalBalance = useSelector(getTotalBalance);
-  const expenses = 0;
-  const incomes = 0;
 
   const OPTIONS = [
     {

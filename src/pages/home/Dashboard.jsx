@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import PageTitle from "../../components/Common/PageTitle";
-import DashboardWidgets from "../../components/Dashboard/DashboardWidgets";
+import Widgets from "../../components/Dashboard/Widgets";
 import InvoiceIcon from "../../components/Icons/InvoiceIcon";
 import Button from "../../components/Button/Button";
 import ClientTable from "../../components/Clients/ClientTable";
@@ -52,7 +52,7 @@ export default function Dashboard() {
       </div>
       <div className="flex flex-wrap">
         <div className="w-full pl-4 pr-4 sm:pl-4 sm:pr-0 mb-4 sm:mb-1">
-          <DashboardWidgets />
+          <Widgets />
 
           {TABLES.map((item) => (
             <div key={item?.title} className="mt-4">
