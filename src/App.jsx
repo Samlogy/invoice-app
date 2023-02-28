@@ -19,9 +19,6 @@ import AddProduct from "./pages/products/AddProduct";
 import InvoiceList from "./pages/invoices";
 import InvoiceDetails from "./pages/invoices/InvoiceDetails";
 
-// import IncomesList from "./pages/incomes";
-// import AddIncome from "./pages/incomes/AddIncome";
-
 import PageLoading from "./components/Common/PageLoading";
 import Container from "./components/Container/Container";
 
@@ -36,10 +33,6 @@ import ProductChoosenModal from "./components/Product/ProductChoosenModal";
 import InvoiceSettingModal from "./components/Invoice/InvoiceSettingModal";
 import InvoiceConfirmModal from "./components/Invoice/InvoiceConfirmModal";
 import InvoiceDeleteConfirm from "./components/Invoice/InvoiceDeleteConfirm";
-
-// import IncomeEditModal from "./components/income/IncomeEditModal";
-// import IncomeDeleteModal from "./components/income/IncomeDeleteModal"
-// import IncomeChooseModal from "./components/income/IncomeChooseModal"
 
 import useInitApp from "./hook/useInitApp";
 
@@ -78,11 +71,6 @@ function Routing() {
             <Route path=":id" element={<InvoiceDetails />} />
           </Route>
 
-          {/* <Route path="incomes">
-            <Route path="" element={<IncomesList />} exact />
-            <Route path=":id" element={<AddIncome />} />
-          </Route> */}
-
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Container>
@@ -99,10 +87,6 @@ function Routing() {
       <InvoiceSettingModal />
       <InvoiceConfirmModal />
       <InvoiceDeleteConfirm />
-
-      {/* <IncomeEditModal />
-      <IncomeDeleteModal />
-      <IncomeChooseModal /> */}
 
       <PageLoading />
     </Routers>

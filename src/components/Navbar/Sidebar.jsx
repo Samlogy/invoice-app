@@ -8,14 +8,12 @@ import HomeIcon from "../Icons/HomeIcon";
 import ProductIcon from "../Icons/ProductIcon";
 import InvoiceIcon from "../Icons/InvoiceIcon";
 import ClientPlusIcon from "../Icons/ClientPlusIcon";
-// import DeleteIcon from "../Icons/DeleteIcon";
-// import SecurityIcon from "../Icons/SecurityIcon";
 import InvoiceNavbarLoading from "../Loading/InvoiceNavbarLoading";
 import { getCompanyData } from "../../store/companySlice";
 import Skeleton from "react-loading-skeleton";
 import Button from "../Button/Button";
 
-import ALL_KEYS from "../../constants/localKeys";
+// import ALL_KEYS from "../../constants/localKeys";
 
 const NAV_DATA = [
   {
@@ -43,11 +41,6 @@ const NAV_DATA = [
     link: "profile",
     Icon: ClientPlusIcon,
   },
-  // {
-  //   title: "Estimates",
-  //   link: "estimates",
-  //   Icon: InvoiceIcon,
-  // },
   // {
   //   title: "Expenses",
   //   link: "expenses",
@@ -78,49 +71,64 @@ export default function Sidebar() {
     }
   }, [showNavbar, toggleNavbar]);
 
-  const clearData = () => {
-    localforage.clear()
-  };
+  const clearData = async () => {
+    await localforage.clear()
+  }
   const importData = (e) => {
     const file = e.target.files[0];
-      let allowedExtensions = /(json)$/i;
-      const isValid = allowedExtensions.exec(file.type);
+    let allowedExtensions = /(json)$/i;
+    const isValid = allowedExtensions.exec(file.type);
 
-      if (!isValid) {
-        alert("Not Valid File Format !");
-        e.target.value = null;
-        return;
-      }
-      // read file content
-      // separate each object data + associate a key with object
-      // save each object + key in indexDB
-  };
-  const exportData = async () => {
-    const exportName = "business-app-db"
-    let appData = []
-
-    const appKeys = Object.values(ALL_KEYS)
-    try {
-       const data = await Promise.all(appKeys.map((item) => localforage.getItem(item)))
-       console.log("data: ", data)
-       appData.push(...data)
-       if (appData) {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData));
-        const downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href",     dataStr);
-        downloadAnchorNode.setAttribute("download", exportName + ".json");
-        document.body.appendChild(downloadAnchorNode); // required for firefox
-        downloadAnchorNode.click();
-        downloadAnchorNode.remove();
-      }
-    } catch (err) {
-      console.log('err: ', err)
+    if (!isValid) {
+      alert("Not Valid File Format !");
+      e.target.value = null;
+      return;
     }
+    // read file content
+    // separate each object data + associate a key with object
+    // save each object + key in indexDB
+  };
+  const exportData = async () => {    
+    const exportName = "business-app-db";
+    let appData = await loadData()
+
+        const dataStr = JSON.stringify({...appData})
+
+        // console.log('str: ', dataStr)
+        // const a =
+        //   "data:text/json;charset=utf-8," +
+        //   encodeURIComponent(dataStr);
+          
+        // const downloadAnchorNode = document.createElement("a");
+        // downloadAnchorNode.setAttribute("href", dataStr);
+        // downloadAnchorNode.setAttribute("download", exportName + ".json");
+        // document.body.appendChild(downloadAnchorNode); // required for firefox
+        // downloadAnchorNode.click();
+        // downloadAnchorNode.remove();
+    
   };
 
   const inputRef = useRef(null);
-  const onClickImport = () => inputRef?.current?.click()
+  const onClickImport = () => inputRef?.current?.click();
 
+  const loadData = async () => {
+    let appData = [];
+    try {
+      const appKeys = await localforage.keys();
+      console.log("appKeys: ", appKeys);
+
+      const data = await Promise.all(
+        appKeys.map(
+          async (key, idx) => appData[key] = await localforage.getItem(key)
+        )
+      );
+
+       console.log('appData: ', appData)
+      return appData
+    } catch (err) {
+      console.log("err: ", err);
+    }
+  }
 
   return (
     <>
@@ -210,11 +218,11 @@ export default function Sidebar() {
 
         <hr />
         <input
-        ref={inputRef}
-        className="hidden"
-        type="file"
-        onChange={importData}
-      />
+          ref={inputRef}
+          className="hidden"
+          type="file"
+          onChange={importData}
+        />
         <Button
           onClick={clearData}
           size="sm"
@@ -224,7 +232,13 @@ export default function Sidebar() {
         >
           <span className="inline-block ml-2"> Clear Data </span>
         </Button>
-        <Button onClick={ onClickImport} size="sm" addStyle="mb-4" block outlined>
+        <Button
+          onClick={onClickImport}
+          size="sm"
+          addStyle="mb-4"
+          block
+          outlined
+        >
           <span className="inline-block ml-2"> Import Data </span>
         </Button>
         <Button onClick={exportData} size="sm" addStyle="mb-4" block outlined>
