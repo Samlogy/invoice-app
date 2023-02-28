@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import localforage from "localforage";
 import { nanoid } from "nanoid";
 import { PRODUCTS_KEY, PRODUCT_FORM_KEY } from "../constants/localKeys";
+import { saveSingleLocalData } from "../utils/storage";
 
 const initialState = {
   openProductSelector: false,
@@ -27,7 +27,7 @@ export const productSlice = createSlice({
     addNewProduct: (state, action) => {
       const newDatas = [...state.data, action.payload];
       state.data = newDatas;
-      localforage.setItem(PRODUCTS_KEY, newDatas);
+      saveSingleLocalData(PRODUCTS_KEY, newDatas);
 
       const reNewForm = {
         id: nanoid(),
@@ -40,12 +40,12 @@ export const productSlice = createSlice({
       };
 
       state.newForm = { ...reNewForm };
-      localforage.setItem(PRODUCT_FORM_KEY, reNewForm);
+      saveSingleLocalData(PRODUCT_FORM_KEY, reNewForm);
     },
 
     updateNewProductForm: (state, action) => {
       state.newForm = { ...action.payload };
-      localforage.setItem(PRODUCT_FORM_KEY, {
+      saveSingleLocalData(PRODUCT_FORM_KEY, {
         ...state.newForm,
         editedAt: new Date().toLocaleDateString(),
       });
@@ -53,7 +53,7 @@ export const productSlice = createSlice({
 
     updateNewProductFormField: (state, action) => {
       state.newForm[action.payload.key] = action.payload.value;
-      localforage.setItem(PRODUCT_FORM_KEY, {
+      saveSingleLocalData(PRODUCT_FORM_KEY, {
         ...state.newForm,
         editedAt: new Date().toLocaleDateString(),
       });
@@ -77,7 +77,7 @@ export const productSlice = createSlice({
       );
       state.data = newDatas;
       state.deletedID = null;
-      localforage.setItem(PRODUCTS_KEY, newDatas);
+      saveSingleLocalData(PRODUCTS_KEY, newDatas);
     },
 
     onConfirmEditProduct: (state, action) => {
@@ -88,7 +88,7 @@ export const productSlice = createSlice({
         state.data[isFindIndex] = { ...action.payload };
       }
       state.editedID = null;
-      localforage.setItem(PRODUCTS_KEY, [...state.data]);
+      saveSingleLocalData(PRODUCTS_KEY, [...state.data]);
     },
 
     setOpenProductSelector: (state, action) => {

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import localforage from "localforage";
 import { COMPANY_KEY } from "../constants/localKeys";
+import { saveSingleLocalData } from "../utils/storage";
 
 const initialState = {
   data: {
@@ -28,7 +28,7 @@ export const companySlice = createSlice({
         state.data.email = email ? email : "";
         state.data.mobile = mobile ? mobile : "";
         state.data.website = website ? website : "";
-        localforage.setItem(COMPANY_KEY, action.payload);
+        saveSingleLocalData(COMPANY_KEY, action.payload);
       } catch (e) {
         console.log(e);
       }

@@ -1,14 +1,14 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
-import localforage from "localforage";
-import imageData from "../shared/imageData.json";
-import colorData from "../shared/colorData.json";
 import {
-  INVOICES_KEY,
-  DEFAULT_INVOICE_COLOR,
   DEFAULT_INVOICE_BG,
+  DEFAULT_INVOICE_COLOR,
+  INVOICES_KEY,
   INVOICE_DETAILS,
   INVOICE_FORM_KEY,
 } from "../constants/localKeys";
+import colorData from "../shared/colorData.json";
+import imageData from "../shared/imageData.json";
+import { saveSingleLocalData } from "../utils/storage";
 
 const initialState = {
   isConfirmModal: false,
@@ -101,23 +101,23 @@ export const invoiceSlice = createSlice({
 
       const updateState = [...state.data, newInvoice];
       state.data = updateState;
-      localforage.setItem(INVOICES_KEY, updateState);
+      saveSingleLocalData(INVOICES_KEY, updateState);
 
       const newDetailList = [...state.detailList, { ...payload, id }];
       state.detailList = newDetailList;
-      localforage.setItem(INVOICE_DETAILS, newDetailList);
+      saveSingleLocalData(INVOICE_DETAILS, newDetailList);
     },
 
     setDefaultColor: (state, action) => {
       const newColor = action.payload;
       state.defaultColor = newColor;
-      localforage.setItem(DEFAULT_INVOICE_COLOR, newColor);
+      saveSingleLocalData(DEFAULT_INVOICE_COLOR, newColor);
     },
 
     setDefaultBackground: (state, action) => {
       const newBackground = action.payload;
       state.defaultBgImage = newBackground;
-      localforage.setItem(DEFAULT_INVOICE_BG, newBackground);
+      saveSingleLocalData(DEFAULT_INVOICE_BG, newBackground);
     },
 
     setDeleteId: (state, action) => {
@@ -139,8 +139,8 @@ export const invoiceSlice = createSlice({
       );
 
       state.deletedID = null;
-      localforage.setItem(INVOICES_KEY, newDatas);
-      localforage.setItem(INVOICE_DETAILS, newDetails);
+      saveSingleLocalData(INVOICES_KEY, newDatas);
+      saveSingleLocalData(INVOICE_DETAILS, newDetails);
     },
 
     onConfirmEditInvoice: (state, action) => {
@@ -151,13 +151,13 @@ export const invoiceSlice = createSlice({
         state.data[isFindIndex] = { ...action.payload };
       }
       state.currentEditedID = null;
-      localforage.setItem(INVOICES_KEY, [...state.data]);
+      saveSingleLocalData(INVOICES_KEY, [...state.data]);
     },
 
     updateNewInvoiceFormField: (state, action) => {
       state.newForm[action.payload.key] = action.payload.value;
       const newForm = { ...state.newForm };
-      localforage.setItem(
+      saveSingleLocalData(
         INVOICE_FORM_KEY,
         JSON.parse(JSON.stringify(newForm))
       );
@@ -165,7 +165,7 @@ export const invoiceSlice = createSlice({
 
     updateNewInvoiceForm: (state, action) => {
       state.newForm = { ...action.payload };
-      localforage.setItem(INVOICE_FORM_KEY, { ...state.newForm });
+      saveSingleLocalData(INVOICE_FORM_KEY, { ...state.newForm });
     },
 
     updateExisitingInvoiceForm: (state, action) => {
@@ -206,8 +206,8 @@ export const invoiceSlice = createSlice({
         state.detailList[findIndexOfDetail] = { ...action.payload };
       }
 
-      localforage.setItem(INVOICES_KEY, [...state.data]);
-      localforage.setItem(INVOICE_DETAILS, [...state.detailList]);
+      saveSingleLocalData(INVOICES_KEY, [...state.data]);
+      saveSingleLocalData(INVOICE_DETAILS, [...state.detailList]);
     },
 
     setSettingModalOpen: (state, action) => {

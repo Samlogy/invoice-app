@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import localforage from "localforage";
 import { nanoid } from "nanoid";
 import { CLIENTS_KEY, CLIENT_FORM_KEY } from "../constants/localKeys";
+import { saveSingleLocalData } from "../utils/storage";
 
 const initialState = {
   openClientSelector: false,
@@ -28,7 +28,7 @@ export const clientsSlice = createSlice({
     addNewClient: (state, action) => {
       const newDatas = [...state.data, action.payload];
       state.data = newDatas;
-      localforage.setItem(CLIENTS_KEY, newDatas);
+      saveSingleLocalData(CLIENTS_KEY, newDatas);
 
       const reNewForm = {
         id: nanoid(),
@@ -42,12 +42,12 @@ export const clientsSlice = createSlice({
       };
 
       state.newForm = { ...reNewForm };
-      localforage.setItem(CLIENT_FORM_KEY, reNewForm);
+      saveSingleLocalData(CLIENT_FORM_KEY, reNewForm);
     },
 
     updateNewClientForm: (state, action) => {
       state.newForm = { ...action.payload };
-      localforage.setItem(CLIENT_FORM_KEY, {
+      saveSingleLocalData(CLIENT_FORM_KEY, {
         ...state.newForm,
         editedAt: new Date().toLocaleDateString(),
       });
@@ -55,7 +55,7 @@ export const clientsSlice = createSlice({
 
     updateNewClientFormField: (state, action) => {
       state.newForm[action.payload.key] = action.payload.value;
-      localforage.setItem(CLIENT_FORM_KEY, {
+      saveSingleLocalData(CLIENT_FORM_KEY, {
         ...state.newForm,
         editedAt: new Date().toLocaleDateString(),
       });
@@ -79,7 +79,7 @@ export const clientsSlice = createSlice({
       );
       state.data = newDatas;
       state.deletedID = null;
-      localforage.setItem(CLIENTS_KEY, newDatas);
+      saveSingleLocalData(CLIENTS_KEY, newDatas);
     },
 
     onConfirmEditClient: (state, action) => {
@@ -90,7 +90,7 @@ export const clientsSlice = createSlice({
         state.data[isFindIndex] = { ...action.payload };
       }
       state.editedID = null;
-      localforage.setItem(CLIENTS_KEY, [...state.data]);
+      saveSingleLocalData(CLIENTS_KEY, [...state.data]);
     },
 
     setOpenClientSelector: (state, action) => {
