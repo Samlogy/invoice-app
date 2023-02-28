@@ -1,12 +1,12 @@
 import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import PageTitle from "../../components/Common/PageTitle";
-import Widgets from "../../components/Dashboard/Widgets";
-import InvoiceIcon from "../../components/Icons/InvoiceIcon";
-import Button from "../../components/Button/Button";
-import ClientTable from "../../components/Clients/ClientTable";
-import InvoiceTable from "../../components/Invoice/InvoiceTable";
-import ProductTable from "../../components/Product/ProductTable";
+import PageTitle from "../components/Common/PageTitle";
+import Widgets from "../components/Dashboard/Widgets";
+import InvoiceIcon from "../components/Icons/InvoiceIcon";
+import Button from "../components/Button/Button";
+import ClientTable from "../components/Clients/ClientTable";
+import InvoiceTable from "../components/Invoice/InvoiceTable";
+import ProductTable from "../components/Product/ProductTable";
 
 export default function Dashboard() {
   const navigate = useNavigate();

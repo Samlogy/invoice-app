@@ -7,7 +7,7 @@ import {
 import { ToastContainer } from "react-toastify";
 import { useEffect } from "react";
 
-import Dashboard from "./pages/home/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 
 import ClientList from "./pages/clients";
