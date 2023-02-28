@@ -1,21 +1,20 @@
-import localforage from "localforage";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import {
   CLIENTS_KEY,
   CLIENT_FORM_KEY,
   COMPANY_KEY,
-  PRODUCTS_KEY,
-  PRODUCT_FORM_KEY,
+  DEFAULT_INVOICE_BG,
+  DEFAULT_INVOICE_COLOR,
+  INVOICES_KEY,
   // APP_CONTEXT,
   INVOICE_DETAILS,
-  INVOICES_KEY,
   INVOICE_FORM_KEY,
-  DEFAULT_INVOICE_COLOR,
-  DEFAULT_INVOICE_BG,
+  PRODUCTS_KEY,
+  PRODUCT_FORM_KEY,
 } from "../constants/localKeys";
 import { useAppContext } from "../context/AppContext";
-import { updateNewClientForm, setAllClients } from "../store/clientSlice";
+import { setAllClients, updateNewClientForm } from "../store/clientSlice";
 import { updateCompanyData } from "../store/companySlice";
 import {
   setAllInvoice,
@@ -23,6 +22,7 @@ import {
   updateNewInvoiceForm,
 } from "../store/invoiceSlice";
 import { setAllProducts, updateNewProductForm } from "../store/productSlice";
+import { getAllLocalData } from "../utils/storage";
 
 const useInitApp = () => {
   const dispatch = useDispatch();
@@ -41,17 +41,17 @@ const useInitApp = () => {
         invoiceNewForm,
         defaultColor,
         defaultBackground,
-      ] = await Promise.all([
-        localforage.getItem(COMPANY_KEY),
-        localforage.getItem(CLIENT_FORM_KEY),
-        localforage.getItem(CLIENTS_KEY),
-        localforage.getItem(PRODUCT_FORM_KEY),
-        localforage.getItem(PRODUCTS_KEY),
-        localforage.getItem(INVOICES_KEY),
-        localforage.getItem(INVOICE_DETAILS),
-        localforage.getItem(INVOICE_FORM_KEY),
-        localforage.getItem(DEFAULT_INVOICE_COLOR),
-        localforage.getItem(DEFAULT_INVOICE_BG),
+      ] = getAllLocalData([
+        COMPANY_KEY,
+        CLIENTS_KEY,
+        CLIENT_FORM_KEY,
+        PRODUCTS_KEY,
+        PRODUCT_FORM_KEY,
+        INVOICES_KEY,
+        INVOICE_DETAILS,
+        INVOICE_FORM_KEY,
+        DEFAULT_INVOICE_BG,
+        DEFAULT_INVOICE_COLOR,
       ]);
 
       if (companyData) {
@@ -91,8 +91,6 @@ const useInitApp = () => {
 
       if (defaultBackground) {
       }
-
-
     } catch (e) {
       console.log(e);
     } finally {

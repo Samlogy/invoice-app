@@ -1,20 +1,29 @@
 import { motion } from "framer-motion";
-import localforage from "localforage";
 import React, { useCallback, useRef } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import { getCompanyData } from "../../store/companySlice";
+import { getAllLocalData, removeAllData } from "../../utils/storage";
 import Button from "../Button/Button";
 import ClientPlusIcon from "../Icons/ClientPlusIcon";
 import HomeIcon from "../Icons/HomeIcon";
 import InvoiceIcon from "../Icons/InvoiceIcon";
 import ProductIcon from "../Icons/ProductIcon";
 import InvoiceNavbarLoading from "../Loading/InvoiceNavbarLoading";
-import {getAllLocalData, removeAllData} from "../../utils/storage"
-
-// import ALL_KEYS from "../../constants/localKeys";
+import {
+  CLIENTS_KEY,
+  CLIENT_FORM_KEY,
+  COMPANY_KEY,
+  DEFAULT_INVOICE_BG,
+  DEFAULT_INVOICE_COLOR,
+  INVOICES_KEY,
+  INVOICE_DETAILS,
+  INVOICE_FORM_KEY,
+  PRODUCTS_KEY,
+  PRODUCT_FORM_KEY,
+} from "../../constants/localKeys";
 
 const NAV_DATA = [
   {
@@ -41,7 +50,7 @@ const NAV_DATA = [
     title: "Profile",
     link: "profile",
     Icon: ClientPlusIcon,
-  }
+  },
 ];
 
 const navDefaultClasses =
@@ -51,7 +60,6 @@ const navItemDefaultClasses = "block px-4 py-2 rounded-md flex flex-1";
 
 export default function Sidebar() {
   const { showNavbar, initLoading, toggleNavbar } = useAppContext();
-  // const { pathname } = useLocation();
   const company = useSelector(getCompanyData);
 
   const onClickNavbar = useCallback(() => {
@@ -63,8 +71,8 @@ export default function Sidebar() {
   }, [showNavbar, toggleNavbar]);
 
   const clearData = async () => {
-    removeAllData()
-  }
+    removeAllData();
+  };
   const importData = (e) => {
     const file = e.target.files[0];
     let allowedExtensions = /(json)$/i;
@@ -79,24 +87,34 @@ export default function Sidebar() {
     // separate each object data + associate a key with object
     // save each object + key in indexDB
   };
-  const exportData = async () => {    
+  const exportData = async () => {
     const exportName = "business-app-db";
-    let appData = await getAllLocalData()
+    let appData = await getAllLocalData([
+      CLIENTS_KEY,
+      CLIENT_FORM_KEY,
+      COMPANY_KEY,
+      DEFAULT_INVOICE_BG,
+      DEFAULT_INVOICE_COLOR,
+      INVOICES_KEY,
+      INVOICE_DETAILS,
+      INVOICE_FORM_KEY,
+      PRODUCTS_KEY,
+      PRODUCT_FORM_KEY,
+    ]);
 
-        const dataStr = JSON.stringify({...appData})
+    const dataStr = JSON.stringify({ ...appData });
 
-        console.log('str: ', dataStr)
-        // const a =
-        //   "data:text/json;charset=utf-8," +
-        //   encodeURIComponent(dataStr);
-          
-        // const downloadAnchorNode = document.createElement("a");
-        // downloadAnchorNode.setAttribute("href", dataStr);
-        // downloadAnchorNode.setAttribute("download", exportName + ".json");
-        // document.body.appendChild(downloadAnchorNode); // required for firefox
-        // downloadAnchorNode.click();
-        // downloadAnchorNode.remove();
-    
+    console.log("str: ", dataStr);
+    // const a =
+    //   "data:text/json;charset=utf-8," +
+    //   encodeURIComponent(dataStr);
+
+    // const downloadAnchorNode = document.createElement("a");
+    // downloadAnchorNode.setAttribute("href", dataStr);
+    // downloadAnchorNode.setAttribute("download", exportName + ".json");
+    // document.body.appendChild(downloadAnchorNode); // required for firefox
+    // downloadAnchorNode.click();
+    // downloadAnchorNode.remove();
   };
 
   const inputRef = useRef(null);

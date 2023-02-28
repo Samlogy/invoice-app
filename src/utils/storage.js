@@ -10,12 +10,11 @@ export const getSingleLocalData = async (key) => {
   }
 };
 
-export const getAllLocalData = async () => {
+export const getAllLocalData = async (keys) => {
   let appData = [];
   try {
-    const appKeys = await storage.keys();
     await Promise.all(
-      appKeys.map(async (key) => (appData[key] = await storage.getItem(key)))
+      keys.map(async (key) => (appData[key] = await storage.getItem(key)))
     );
     return appData;
   } catch (err) {
